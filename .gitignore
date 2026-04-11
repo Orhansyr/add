@@ -1,0 +1,35 @@
+site.txt
+
+# Local tools/files
+.qodo/
+
+# Virtual environments
+sanal/
+venv/
+.venv/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs and temp files
+*.log
+*.bak
+*.tmp
+*.swp
+
+# Django generated files
+db.sqlite3
+media/
+staticfiles/
+
+# IDE/OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test files
+.env.docker.example
+.env.host.example
