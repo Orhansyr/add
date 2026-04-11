@@ -1,0 +1,646 @@
+
+
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block content %}
+{% load thumbnail %}
+
+
+    
+
+        
+            
+
+           
+            
+        
+
+            <!-- Slider Bölümü Start Here -->
+            <section class="section-space-bottom">
+                <div class="container">
+                    <div class="row no-gutters">
+                        <div class="col-lg-8 col-12">
+                            <div class="main-slider1 img-overlay-slider rounded ">
+                                <div class="bend niceties preview-1">
+                                        <div id="ensign-nivoslider-3" class="slides">
+                                        {% for haber in news|slice:":5" %}
+                                            {% with first=haber.images.first %}
+                                                {% if first %}
+                                                    {% thumbnail first.image "slider" as thumb %}
+                                                        <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ haber.name }}" title="#slider-direction-{{ forloop.counter }}" class="slider-img img-fluid rounded " />
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endfor %}
+                                        </div>
+
+                            {# Sliderda sadece resmi olan haberlerin yön bloklarını oluştur. #}
+                                        {% for haber in news|slice:":5" %}
+                                        {% with first=haber.images.first %}
+                                        {% if first %}
+                                        <div id="slider-direction-{{ forloop.counter }}" class="t-cn slider-direction">
+                                            <div class="slider-content s-tb slide-{{ forloop.counter }}">
+                                                <div class="title-container s-tb-c">
+                                                    <div class="text-left pl-50 pl20-xs">
+                                                        <a href="{{ haber.category.get_absolute_url }}"><div class="topic-box-sm color-cinnabar mb-20">{{ haber.category.name }}</div></a>
+                                                        <div class="post-date-light d-none d-sm-block">
+                                                            <ul>
+                                                                <li>
+                                                                    <span>yazar</span>
+                                                                    <a href="{{ haber.author.get_absolute_url }}">{{ haber.author.name }}</a>
+                                                                </li>
+                                                                <li>
+                                                                    <span>
+                                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                    </span>{{ haber.published_date|date:"F d, Y" }}</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="slider-title"><a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% endwith %}
+                                        {% endfor %}
+                                    </div>
+                            </div>
+                        </div>
+
+                <!-- Slider'ın sağ tarafında gösterilecek diğer haberler için bir bölüm oluşturuyoruz. -->
+                        
+                        <div class="col-lg-4 col-12">
+                            <div class="item-box-light-md-less30 ie-full-width">
+                                <div class="row">
+                                    {% for haber in news|slice:"5:9" %}
+                                    {% with first=haber.images.first %}
+                                    {% if first %}
+                                    <div class="media mb-30 col-12">
+                                        <a class="img-opacity-hover" href="{{ haber.get_absolute_url }}">
+                                            {% thumbnail first.image "170x100" as thumb %}
+                                            <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid rounded ">
+                                        </a>
+                                        <div class="media-body media-padding5">
+                                            <div class="post-date-dark">
+                                                <ul>
+                                                    <li>
+                                                        <span>
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </span>{{ haber.published_date|date:"F d, Y" }}</li>
+                                                </ul>
+                                            </div>
+                                            <h3 class="title-medium-dark size-md mb-none">
+                                                <a href="{{ haber.get_absolute_url }}">{{ haber.name|truncatechars:25 }}</a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endwith %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slider'ın sağ tarafında gösterilecek diğer haberler  SONU -->
+                    </div>
+                </div>
+            </section>
+            <!-- Slider Area End Here -->
+
+
+            <!-- Tüm Haberler  Bölümü Start Here -->
+
+            <section class="section-space-bottom">
+                <div class="container">
+                    <div class="item-box-light-md-less10">
+                        <div class="ne-isotope-all">
+                            <div class="topic-border color-cinnabar mb-30">
+                                <div class="topic-box-lg color-cinnabar">Tüm Haberler</div>
+                                <div class="isotope-classes-tab isotop-btn">
+                                    <a href="#" data-filter="*" class="current">Tümü</a>
+                                    
+                                {% for cat in categories %}
+                                    {% if not cat.parent %} <!-- Sadece ana kategoriler için filtreleme yaptık -->
+                                            <a href="#" data-filter=".{{ cat.slug }}">{{ cat.name }}</a>
+                                     {% endif %}
+                               {% endfor %}
+                                    
+                                </div>
+                                <div class="more-info-link">
+                                    <a href="#">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row tab-space5 featuredContainer">
+                                {# Isotope ile filtrelenebilir listede her haber bir öğe olacak. #}
+                                {% for haber in news|slice:":9" %}
+                                <div class="col-lg-4 col-md-6 col-sm-6 col-12 featured-item {{ haber.category.slug }}">
+                                     {% with first=haber.images.first first_video=haber.videos.first %}
+                                    <div class="{% if first %}img-overlay-70{% else %}position-relative{% endif %} img-scale-animate mb-10 rounded ">
+                                             {# if first ile Eğer haberin bir görseli varsa, onu göster. Yoksa video varsa onu göster. Hiçbir medya yoksa uyarı mesajı göster.#}
+                                            {% if first %}
+                                                {% thumbnail first.image "category" as thumb %}
+                                                    <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ haber.name }}" class="img-fluid width-100" />
+                                            {% elif first_video and first_video.youtube_url %}
+                                                <iframe src="{{ first_video.get_embed_url }}" width="310" height="227" style="width:100%;height:227px;display:block;border:0;position:relative;z-index:5;pointer-events:auto;" allowfullscreen allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                                            {% elif first_video and first_video.video_file %}
+                                                <video class="img-fluid" style="width:100%;height:227px;object-fit:cover;display:block;border:0;position:relative;z-index:5;pointer-events:auto;" controls preload="metadata">
+                                                    <source src="{{ first_video.video_file.url }}" type="video/mp4">
+                                                    Tarayıcınız video etiketini desteklemiyor.
+                                                </video>
+                                            {% else %}
+                                                <div class="alert alert-primary" role="alert">
+                                                    <strong>Uyarı!</strong> Maalesef bulunamadı.. Bu haber için görsel bulunamadı.
+                                                </div>
+                                            {% endif %}
+                                        
+                                        <div class="topic-box-top-sm">
+                                            <div class="topic-box-sm color-cod-gray mb-20">{{ haber.category.name }}</div>
+                                       
+                                        </div>
+                                        {% if first  %}
+                                        <div class="mask-content-xs">
+                                            
+                                            <div class="post-date-light d-none d-md-block">
+                                                <ul>
+                                                    
+                                                    <li>
+                                                        <span>yazar</span>
+                                                        <a href="{{ haber.author.get_absolute_url }}">{{ haber.author.name }}</a>
+                                                    </li>
+                                                    <li>
+                                                        <span>
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </span>{{ haber.published_date|date:"d M Y" }}</li>
+                                                </ul>
+                                            </div> 
+                                            <h3 class="title-medium-light size-lg ">
+                                                <a href="{{ haber.get_absolute_url }}">{{ haber.name|upper|truncatewords:6 }}</a>
+                                            </h3>
+                                        </div>
+                                        {% endif %}
+                                        {# sadece video'lu haberler için:Eğer haberin görseli yoksa ama videosu varsa, videonun üzerine haber başlığını yerleştir. #}
+                                     {% if first_video and not first  %}
+                                          <div class="mask-content-xs" style="bottom:58px; right:20px; z-index:8; pointer-events:none;">
+                                              <h3 class="title-medium-light size-lg mb-0">
+                                                  <a href="{{ haber.get_absolute_url }}" style="pointer-events:auto; background-color: rgba(13, 14, 12, 0.5);"> {{ haber.name|upper|truncatewords:6  }}</a>
+                                              </h3>
+                                          </div>
+                                        
+                                        
+                                        {% endif %}
+                                        
+                                    </div>
+                                 {% endwith %}
+                                </div>
+                                
+                                {% endfor %}
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Tüm Haberler  Bölümü End Here -->
+           
+
+            <!-- Yazarlar bölümü ile haber 3 TAB kısmı ve Sosyal Medya kısmı Başlangıç-->
+            <section class="section-space-bottom-less30">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-12 mb-30">
+                            <div class="item-box-light-md-less30 ie-full-width">
+                                <div class="topic-border color-cinnabar mb-30">
+                                    <div class="topic-box-lg color-cinnabar">Yazarlar</div>
+                                    
+                                </div>
+                                <!-- Yazar bazında haberleri gruplayarak göstermek için Django'nun regroup etiketini kullanacağız.
+                                     Bu örnekte, haberleri yazarlarına göre gruplayacağız. Her grup, o yazara ait haberlerin bir listesini içerecek. -->
+                                <!--  group = {
+                                          'grouper': <Author object>,  # Yazarın objesi
+                                          'list': [<News1>, <News2>, ...]  # Bu yazarın tüm haberleri
+                                         } yani: news — gruplandırılacak liste
+                                              by author — yazara göre grupla
+                                           as author_groups — sonuç bu değişkene kaydedilir -->
+                                <div class="row">
+                                    {% regroup news|dictsort:"author.id" by author as author_groups %}
+                                    {% for group in author_groups %}
+                                      {% with yazar=group.grouper haber=group.list|first %}
+
+                                    <div class="col-lg-12 col-md-6 col-sm-12">
+                                        <div class="media media-none--md mb-30">
+                                            <div class="position-relative width-40">
+                                                <a href="{{ yazar.get_absolute_url }}" class="img-opacity-hover">
+                                                    {% if yazar.image %}
+                                                    {% thumbnail yazar.image "yazar" as thumb %}
+                                                    <img src="{{ thumb.url }}" alt="news" class="img-fluid rounded ">
+                                                    {% else %}
+                                                    <img src="/static/img/author.jpg" alt="news" class="img-fluid rounded ">
+                                                    {% endif %}
+                                                </a>
+                                                <div class="topic-box-top-xs">
+                                                    <div class="topic-box-sm color-cod-gray mb-20">Yazar</div>
+                                                </div>
+                                            </div>
+                                            <div class="media-body p-mb-none-child media-margin30">
+                                                <div class="post-date-dark">
+                                                    <ul>
+                                                        <li>
+                                                            <span>Yazar</span>
+                                                            <a href="{{ yazar.get_absolute_url }}">{{ yazar.name|title }}</a>
+                                                        </li>
+                                                        <li>
+                                                            <span>
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                            </span>{{ haber.published_date|date:"d F, Y" }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h3 class="title-semibold-dark size-lg mb-15">
+                                                    <a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a>
+                                                </h3>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                      {% endwith %}
+                                    {% endfor %}
+                                  
+                                    
+                                    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                <!-- YAZARLAR BÖLÜMÜ SONU  -->
+
+                     <!-- SOSYAL MEDYA ve SİDEBAR  KISMI BAŞLANGICI  -->
+                        <div class="ne-sidebar sidebar-break-lg col-xl-4 col-lg-12">
+                            <div class="sidebar-box item-box-light-md">
+                                <div class="topic-border color-cinnabar mb-30">
+                                    <div class="topic-box-lg color-cinnabar">Bizi Takip Edin</div>
+                                </div>
+                                <ul class="stay-connected-color overflow-hidden">
+                                    <li class="facebook">
+                                        <a href="#">
+                                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                                            <div class="connection-quantity">50.2 k</div>
+                                            <p>Fans</p>
+                                        </a>
+                                    </li>
+                                    <li class="twitter">
+                                        <a href="#">
+                                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                                            <div class="connection-quantity">10.3 k</div>
+                                            <p>Followers</p>
+                                        </a>
+                                    </li>
+                                    <li class="linkedin">
+                                        <a href="#">
+                                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                            <div class="connection-quantity">25.4 k</div>
+                                            <p>Fans</p>
+                                        </a>
+                                    </li>
+                                    <li class="rss">
+                                        <a href="#">
+                                            <i class="fa fa-rss" aria-hidden="true"></i>
+                                            <div class="connection-quantity">20.8 k</div>
+                                            <p>Subscriber</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                     <!-- Sosyal medya kısmı sonu -->
+
+
+                         <!-- Haberleri sekmeler halinde göstermek için tab yapısı -->
+
+                            <div class="sidebar-box item-box-light-md-less30">
+                                <ul class="btn-tab item-inline block-xs nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a href="#recent" data-toggle="tab" aria-expanded="true" class="active">Türkiye</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#popular" data-toggle="tab" aria-expanded="false">Bursa</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#common" data-toggle="tab" aria-expanded="false">Spor</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active show" id="recent">
+                                        <div class="row">
+                                            {% for haber in news|slice:":6" %}
+                                                {% if haber.category.slug == 'bursa' %}
+                                                {% with first=haber.images.first %}
+                                                {% if first %}
+                                                <div class="col-xl-6 col-lg-4 col-md-4 col-sm-6 col-6 mb-25">
+                                                    <div class="position-relative">
+                                                        <div class="topic-box-top-xs">
+                                                            <div class="topic-box-sm color-cod-gray mb-20">{{ haber.category.name }}</div>
+                                                        </div>
+                                                        <a href="{{ haber.get_absolute_url }}" class="img-opacity-hover">
+                                                            {% thumbnail first.image "category" as thumb %}
+                                                                <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid width-100 mb-10 rounded ">
+                                                        </a>
+                                                        <h3 class="title-medium-dark size-sm mb-none">
+                                                            <a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endwith %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="popular">
+                                        <div class="row">
+                                            {% for haber in news %}
+                                                {% if haber.category.slug == 'turkiye' %}
+                                                {% with first=haber.images.first %}
+                                                {% if first %}
+                                                <div class="col-xl-6 col-lg-4 col-md-4 col-sm-6 col-6 mb-25">
+                                                    <div class="position-relative">
+                                                        <div class="topic-box-top-xs">
+                                                            <div class="topic-box-sm color-cod-gray mb-20">{{ haber.category.name }}</div>
+                                                        </div>
+                                                        <a href="{{ haber.get_absolute_url }}" class="img-opacity-hover">
+                                                            {% thumbnail first.image "category" as thumb %}
+                                                                <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid width-100 mb-10 rounded ">
+                                                        </a>
+                                                        <h3 class="title-medium-dark size-sm mb-none">
+                                                            <a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endwith %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="common">
+                                        <div class="row">
+                                            {% for haber in news %}
+                                                {% if haber.category.slug == 'spor' %}
+                                                {% with first=haber.images.first %}
+                                                {% if first %}
+                                                <div class="col-xl-6 col-lg-4 col-md-4 col-sm-6 col-6 mb-25">
+                                                    <div class="position-relative">
+                                                        <div class="topic-box-top-xs">
+                                                            <div class="topic-box-sm color-cod-gray mb-20">{{ haber.category.name }}</div>
+                                                        </div>
+                                                        <a href="{{ haber.get_absolute_url }}" class="img-opacity-hover">
+                                                            {% thumbnail first.image "category" as thumb %}
+                                                                <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid width-100 mb-10 rounded ">
+                                                        </a>
+                                                        <h3 class="title-medium-dark size-sm mb-none">
+                                                            <a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endwith %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Haberleri sekmeler halinde göstermek için tab yapısı SONU -->
+
+                            <div class="sidebar-box item-box-light-md-less30">
+                                <div class="topic-border color-cinnabar mb-20">
+                                    <div class="topic-box-lg color-cinnabar">Icerik Bolumleri (RSS)</div>
+                                </div>
+                                <ul class="mb-0 pl-20">
+                                    <li class="mb-8">
+                                        <a href="/rss/" target="_blank" rel="noopener noreferrer">Tum Haberler RSS</a>
+                                    </li>
+                                    {% for cat in categories %}
+                                    <li class="mb-8">
+                                        <a href="/rss/kategori/{{ cat.slug }}/" target="_blank" rel="noopener noreferrer">{{ cat.name }} RSS</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Yazarlar bölümü ve sidebar Sosyal Medya kısmı SONU  End Here -->
+
+
+
+            <!-- Video Haberler bAŞLANGIÇ Start Here -->
+            <section class="bg-secondary-body section-space-default">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="topic-border color-cinnabar mb-30 width-100">
+                                <div class="topic-box-lg color-cinnabar">Videoları İzle</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ne-carousel nav-control-top2 color-white2" data-loop="true" data-items="3" data-margin="10" data-autoplay="true"
+                        data-autoplay-timeout="5000" data-smart-speed="2000" data-dots="false" data-nav="true" data-nav-speed="false"
+                        data-r-x-small="1" data-r-x-small-nav="true" data-r-x-small-dots="false" data-r-x-medium="1" data-r-x-medium-nav="true"
+                        data-r-x-medium-dots="false" data-r-small="2" data-r-small-nav="true" data-r-small-dots="false" data-r-medium="2"
+                        data-r-medium-nav="true" data-r-medium-dots="false" data-r-Large="3" data-r-Large-nav="true" data-r-Large-dots="false">
+                        {% for video in videos %}
+                        <div class="mb-30">
+                            <div class="mb-10">
+                               <a href="{{ video.news.category.get_absolute_url }}"><div class="topic-box-sm color-cod-gray">{{ video.news.category.name }}</div></a>
+                            </div>
+                            <div class="text-center">
+                                {% if video.youtube_url %}
+                                    <iframe id="video-frame-{{ forloop.counter }}" src="{{ video.get_embed_url }}" width="310" height="206" style="width:100%;height:206px;display:block;border:0;" allowfullscreen allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                                    <div class="mt-2">
+                                        <a class="btn btn-md btn-secondary" href="{{ video.get_watch_url|default:video.youtube_url }}" target="_blank" rel="noopener noreferrer">YouTube'da Aç</a>
+                                    </div>
+                                {% elif video.video_file %}
+                                    <video class="img-fluid width-100 js-file-video-toggle" controls preload="metadata" poster="{% with first_image=video.news.images.first %}{% if first_image %}{% thumbnail first_image.image 'video' as im %}{{ im.url }}{% else %}{% static 'img/news/news291.jpg' %}{% endif %}{% endwith %}">
+                                        <source src="{{ video.video_file.url }}" type="video/mp4">
+                                        Tarayıcınız video etiketini desteklemiyor.
+                                    </video>
+                                    <div >
+                                        <a class="btn btn-md btn-secondary" href="{{ video.video_file.url }}" target="_blank" rel="noopener noreferrer">Haber Videosunu Aç</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <h3 class="title-medium-light mt-15">
+                                <a href="{{ video.news.get_absolute_url }}">{{ video.news.name|truncatechars:50 }}</a>
+                            </h3>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+            <!-- Videos Bölüm sonu  -->
+
+
+
+            <!-- Category Area Start Here -->
+            {% comment %}
+            <section class="bg-body section-space-less10">
+                <div class="container">
+                    <div class="row tab-space5">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
+                                <img src="{% static 'img/category/ctg10.jpg' %}" alt="news" class="img-fluid width-100">
+                                <div class="content p-30-r">
+                                    <div class="ctg-title-xs">Food</div>
+                                    <h3 class="title-regular-light size-lg">
+                                        <a href="post-style-1.html">neresi neresi</a>
+                                    </h3>
+                                    <div class="post-date-light d-block d-sm-none d-md-block">
+                                        <ul>
+                                            <li>
+                                                <span>by</span>
+                                                <a href="single-news-1.html">Adams</a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>March 22, 2017</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
+                                <img src="{% static 'img/category/ctg11.jpg' %}" alt="news" class="img-fluid width-100">
+                                <div class="content p-30-r">
+                                    <div class="ctg-title-xs">Food</div>
+                                    <h3 class="title-regular-light size-lg">
+                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
+                                    </h3>
+                                    <div class="post-date-light d-block d-sm-none d-md-block">
+                                        <ul>
+                                            <li>
+                                                <span>by</span>
+                                                <a href="single-news-1.html">Adams</a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>March 22, 2017</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
+                                <img src="img/category/ctg12.jpg" alt="news" class="img-fluid width-100">
+                                <div class="content p-30-r">
+                                    <div class="ctg-title-xs">Food</div>
+                                    <h3 class="title-regular-light size-lg">
+                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
+                                    </h3>
+                                    <div class="post-date-light d-block d-sm-none d-md-block">
+                                        <ul>
+                                            <li>
+                                                <span>by</span>
+                                                <a href="single-news-1.html">Adams</a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>March 22, 2017</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
+                                <img src="img/category/ctg13.jpg" alt="news" class="img-fluid width-100">
+                                <div class="content p-30-r">
+                                    <div class="ctg-title-xs">Food</div>
+                                    <h3 class="title-regular-light size-lg">
+                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
+                                    </h3>
+                                    <div class="post-date-light d-block d-sm-none d-md-block">
+                                        <ul>
+                                            <li>
+                                                <span>by</span>
+                                                <a href="single-news-1.html">Adams</a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>March 22, 2017</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
+                                <img src="img/category/ctg14.jpg" alt="news" class="img-fluid width-100">
+                                <div class="content p-30-r">
+                                    <div class="ctg-title-xs">Food</div>
+                                    <h3 class="title-regular-light size-lg">
+                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
+                                    </h3>
+                                    <div class="post-date-light d-block d-sm-none d-md-block">
+                                        <ul>
+                                            <li>
+                                                <span>by</span>
+                                                <a href="single-news-1.html">Adams</a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>March 22, 2017</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
+                                <img src="img/category/ctg15.jpg" alt="news" class="img-fluid width-100">
+                                <div class="content p-30-r">
+                                    <div class="ctg-title-xs">Food</div>
+                                    <h3 class="title-regular-light size-lg">
+                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
+                                    </h3>
+                                    <div class="post-date-light d-block d-sm-none d-md-block">
+                                        <ul>
+                                            <li>
+                                                <span>by</span>
+                                                <a href="single-news-1.html">Adams</a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>March 22, 2017</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+{% endcomment %}
+            
+          
+{% endblock %}
+
+  
+
+ 
+
+  
+
+

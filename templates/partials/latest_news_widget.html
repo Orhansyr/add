@@ -1,0 +1,27 @@
+{% comment %}   #######################   {% endcomment %}
+{% comment %}
+ 
+ Son haberler widget'ı için kullanılan şablon. Bu şablon, en son haberleri göstermek için kullanılır haber detay sayfasında. sitede kullanmadık ama ileride kullanabiliriz diye bıraktık.
+
+{% endcomment %}
+    <div class="sidebar-box">
+    <div class="item-box-light-md">
+        <div class="topic-border color-cod-gray mb-25">
+            <div class="topic-box-lg color-cod-gray">{{ widget_title }}</div>
+        </div>
+        {% for item in latest_news %}
+        <div class="post-date-dark mb-10">
+            <ul>
+                <li>
+                    <span><i class="fa fa-calendar" aria-hidden="true"></i></span>{{ item.published_date|date:"d M Y" }}
+                </li>
+            </ul>
+        </div>
+        <h3 class="title-semibold-dark size-md mb-15">
+            <a href="{{ item.get_absolute_url }}">{{ item.name|truncatewords:7 }}</a>
+        </h3>
+        {% empty %}
+        <p class="mb-0">Gosterilecek haber bulunamadi.</p>
+        {% endfor %}
+    </div>
+</div>

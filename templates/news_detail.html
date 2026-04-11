@@ -1,0 +1,575 @@
+
+
+{% extends "partials/base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load news_extras %}
+
+{% block lightbox2 %}
+<link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+{% endblock %}
+
+
+   
+{% block content %}
+        {% comment %}
+            <!-- Haber üst Akış  yazısı -->
+            <section class="container">
+                <div class="bg-body-color ml-15 pr-15 mb-10 mt-10">
+                    <div class="row no-gutters d-flex align-items-center">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-5">
+                            <div class="topic-box">Diğer Haberler</div>
+                        </div>
+                        <div class="col-lg-10 col-md-9 col-sm-8 col-7">
+                            <div class="feeding-text-light2">
+                                
+                                <ol id="sample" class="ticker">
+                                    {% for haber in benzer_haberler %}
+                                    <li>
+                                        <a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Haber üst Akış yazısı bitiş Here -->
+
+            <!-- güncel Bİlgi Listesi  Start Here -->
+            <section class="bg-body">
+                <div class="container">
+                    <ul class="news-info-list text-center--sm">
+                        <li>
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>Australia</li>
+                        <li>
+                            <i class="fa fa-calendar" aria-hidden="true"></i><span id="current_date"></span></li>
+                        <li>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>Last Update 11.30 am</li>
+                        <li>
+                            <i class="fa fa-cloud" aria-hidden="true"></i>29&#8451; Sydney, Australia</li>
+                    </ul>
+                </div>
+            </section>
+            <!-- güncel Bİlgi Listesi  End Here -->
+
+            <!-- Breadcrumb Area Start Here -->
+            <section class="breadcrumbs-area" style="background-image: url('{% static 'img/banner/breadcrumbs-banner.jpg' %}');">
+                <div class="container">
+                    <div class="breadcrumbs-content">
+                        <h1>{{ news.name }}</h1>
+                        <ul>
+                            <li style=" font-size: 14px; color: #da0d0d; font-weight: medium; text-transform: uppercase; ">
+                                <a href="{{ news.category.get_absolute_url }}">Kategori : {{ news.category.name }} </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <!-- Breadcrumb Area End Here -->
+            {% endcomment %}
+             
+            <!-- News Details Page Area Start Here -->
+            <section class="bg-accent section-space-less30">
+                <div class="news-details-layout2">
+                    <div class="container">
+                        <div class="row mb-50-r">
+                            <div class="col-12">
+                                {% with first=news.images.first video=news.videos.first yazar=news.author %}
+                                <div class="position-relative {% if first %}img-overlay-70{% endif %}" style="max-width: 720px; width: 100%; margin: 0 auto; background: #ffffff; border-radius: 10px; overflow: hidden;">
+                                    {% if first %}
+                                        {% thumbnail first.image "690x342" crop="center" as thumb %}
+                                            <a href="{{ first.image.url }}" data-lightbox="news-gallery" data-title="{{ news.name }}">
+                                            <img src="{{ thumb.url }}" alt="{{ news.name }}" class="img-fluid rounded width-100" style="display: block; width: 100%; height: auto; margin: 0 auto; object-fit: cover;">
+                                            </a>
+                                    {% elif video and video.youtube_url %}
+                                        <div class="embed-responsive embed-responsive-16by9" style="width: 100%; margin: 0 auto; background: #111;">
+                                            <iframe
+                                                class="embed-responsive-item"
+                                                src="{{ video.get_embed_url }}"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                referrerpolicy="strict-origin-when-cross-origin"
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                    {% elif video and video.video_file %}
+                                        <video class="img-fluid" controls playsinline preload="metadata" style="display: block; width: 100%; margin: 0 auto; height: auto; background: #111;">
+                                            <source src="{{ video.video_file.url }}" type="video/mp4">
+                                            Tarayıcınız video etiketini desteklemiyor.
+                                        </video>
+                                        <div class="mt-10 text-center">
+                                            <a class="btn btn-md btn-secondary" href="{{ video.video_file.url }}" target="_blank" rel="noopener noreferrer">Haber Videosunu Aç</a>
+                                        </div>
+                                    {% endif %}
+                                    
+                                </div>
+                                {% endwith %}
+                            </div>
+                        </div>
+                         {# haber iç kısmı ilk 25 karakter 2 resim sonra haberin devamı ve resimler varsa video #}
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-7 col-md-12 mb-30">
+                                <div class="item-box-light-lg mb-30">
+                                   <article id="news" title="{{ news.name }}"> <p>{{ news.content|content_first:25 }}</p> </article>
+                                    <ul class="item2-inline mt-30 mb-30 block-mb">
+                                        {% for img in news.images.all|slice:"1:3" %}
+                                        <li>
+                                            {% thumbnail img.image "category" as thumb %}
+                                                <a href="{{ img.image.url }}" data-lightbox="news-gallery" data-title="{{ news.name }}">
+                                                <img src="{{ thumb.url }}" alt="{{ news.name }}" class="img-fluid rounded">
+                                                </a>
+                                        </li>
+                                        
+                                        {% endfor %}
+
+                                    </ul>
+
+                                   <article id="news" title="{{ news.name }}"> <p>{{ news.content|content_after }}</p> </article>
+                                    <ul class="item2-inline mt-30 mb-30 block-mb">
+                                        {% for img in news.images.all|slice:"3:" %}
+                                        <li>
+                                            {% thumbnail img.image "category" as thumb %}
+                                                <a href="{{ img.image.url }}" data-lightbox="news-gallery" data-title="{{ news.name }}">
+                                                <img src="{{ thumb.url }}" alt="{{ news.name }}" class="img-fluid rounded">
+                                                </a>
+                                        </li>
+                                        
+                                        {% endfor %}
+
+                                    </ul>
+                                    {% with video=news.videos.first %}
+                                   
+                                    {% if video %}<div class="alert alert-info mt-30 mb-30" role="alert"> Haber videosunu izlemek için aşağıdaki oynat düğmesine tıklayın: </div>{% endif %}
+                                     <ul class="item2-inline mt-30 mb-30 block-mb">
+                                         {% if video and video.youtube_url %}
+                                        
+                                        <div class="embed-responsive embed-responsive-16by9" style="max-width: 720px; width: 80%; margin: 0 auto;">
+                                            <iframe
+                                                class="embed-responsive-item"
+                                                src="{{ video.get_embed_url }}"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                referrerpolicy="strict-origin-when-cross-origin"
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                      {% elif video and video.video_file %}
+                                        <video class="img-fluid rounded" controls playsinline preload="metadata" style="max-width: 720px; width: 80%; display: block; margin: 0 auto; height: auto;">
+                                            <source src="{{ video.video_file.url }}" type="video/mp4">
+                                            Tarayıcınız video etiketini desteklemiyor.
+                                        </video>
+
+                                      {% else %}
+                                        <div class="alert alert-warning mt-30 mb-30" role="alert">
+                                            Bu haber için video bulunmamaktadır.
+                                        </div>  
+                                        
+                                     {% endif %} 
+                                    {% endwith %}
+
+                                    </ul>
+                                    
+                            
+                                       
+ 
+                                  <!-- Sosyal Medya ve paylaşım alanı -->      
+                                    
+                                    <div class="post-share-area item-shadow-1">
+                                        <p>Haberi paylaş!</p>
+                                        {% with share_url=request.build_absolute_uri %}
+                                        <ul class="social-default item-inline">
+                                            <li>
+                                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" class="facebook" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="https://twitter.com/intent/tweet?text={{ news.name|truncatechars:70|urlencode }}&url={{ share_url|urlencode }}" class="twitter" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            
+                                            <li class="bg-danger">
+                                                <a href="https://www.instagram.com/" class="instagram" target="_blank" rel="noopener noreferrer" onclick="copyShareLink('{{ share_url|escapejs }}')">
+                                                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            
+                                            <li class="bg-success">
+                                                <a href="https://wa.me/?text={{ news.name|urlencode }}%20{{ share_url|urlencode }}" class="whatsapp" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url|urlencode }}" class="linkedin" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                                
+                                <!-- Önceki ve sonraki haberler alanı -->
+                                <div class="row no-gutters divider blog-post-slider">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        {% if prev_news %}
+                                            <a href="{{ prev_news.get_absolute_url }}" class="prev-article">
+                                                <i class="fa fa-angle-left" aria-hidden="true"></i>Önceki Haber
+                                            </a>
+                                            <h3 class="title-medium-dark pr-50">
+                                                <a href="{{ prev_news.get_absolute_url }}">{{ prev_news.name }}</a>
+                                            </h3>
+                                        {% else %}
+                                            <span class="prev-article text-muted">
+                                                <i class="fa fa-angle-left" aria-hidden="true"></i>Önceki Haber Yok
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        {% if next_news %}
+                                            <a href="{{ next_news.get_absolute_url }}" class="next-article">Sonraki Haber
+                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            </a>
+                                            <h3 class="title-medium-dark pl-50">
+                                                <a href="{{ next_news.get_absolute_url }}">{{ next_news.name }}</a>
+                                            </h3>
+                                        {% else %}
+                                            <span class="next-article text-muted">Sonraki Haber Yok
+                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <!-- Önceki ve sonraki haberler alanı bitiş Here -->
+
+                                <!-- Yazar bilgisi alanı -->
+                                <div class="author-info bg-body item-shadow-1 p-35-r mb-30">
+                                    <div class="media media-none-xs">
+                                        {% if news.author and news.author.image %}
+                                            <img src="{{ news.author.image.url }}" alt="{{ news.author.name }}" class="img-fluid rounded-circle width50-xs rounded">
+                                        {% else %}
+                                            <img src="{% static 'img/author.jpg' %}" alt="author" class="img-fluid rounded-circle width50-xs rounded">
+                                        {% endif %}
+                                        <div class="media-body media-margin30 pt-10">
+                                            <h3 class="size-lg mb-5">{{ news.author.name|title|default:"Bölge Gazetesi" }}</h3>
+                                            {% if news.author %}
+                                                <div class="post-by mb-5"><a href="{{ news.author.get_absolute_url }}"><i class="fa fa-user" aria-hidden="true"></i> <strong>Yazar'a ait diğer haberler</strong></a></div>
+                                            {% else %}
+                                                <div class="post-by mb-5">Yazar</div>
+                                            {% endif %}
+                                            {% if news.author %}
+                                               <a href="{{ news.author.get_absolute_url }}"><p class="mb-15 text-dark">Bu haber {{ news.author.name|title }} tarafından yazıldı</p></a>
+                                            {% endif %}
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Benzer haberler alanı -->
+                                <div class="related-post item-box-light-lg mb-30">
+                                    <div class="topic-border color-cod-gray mb-30 width-100">
+                                        <div class="topic-box-lg color-cod-gray">Benzer Haberler</div>
+                                    </div>
+                                    <div class="ne-carousel nav-control-top2 color-cod-gray" data-loop="true" data-items="3" data-margin="15" data-autoplay="true"
+                                        data-autoplay-timeout="5000" data-smart-speed="2000" data-dots="false" data-nav="true"
+                                        data-nav-speed="false" data-r-x-small="1" data-r-x-small-nav="true" data-r-x-small-dots="false"
+                                        data-r-x-medium="2" data-r-x-medium-nav="true" data-r-x-medium-dots="false" data-r-small="2"
+                                        data-r-small-nav="true" data-r-small-dots="false" data-r-medium="2" data-r-medium-nav="true"
+                                        data-r-medium-dots="false" data-r-Large="3" data-r-Large-nav="true" data-r-Large-dots="false">
+                                        {% for item in benzer_haberler %}
+                                        <div class="position-relative">
+                                            <div class="img-scale-animate mb-20">
+                                                {% with im=item.images.first %}
+                                                {% if im %}
+                                                    {% thumbnail im.image "category" as thumb %}
+                                                        <a href="{{ item.get_absolute_url }}">
+                                                            <img src="{{ thumb.url }}" alt="{{ item.name }}" class="img-fluid width-100 rounded">
+                                                        </a>
+                                                {% else %}
+                                                    <a href="{{ item.get_absolute_url }}">
+                                                        <img src="{% static 'img/blog1.jpg' %}" alt="{{ item.name }}" class="img-fluid width-100 rounded">
+                                                    </a>
+                                                {% endif %}
+                                                {% endwith %}
+                                                <div class="topic-box-top-xs">
+                                                    <div class="topic-box-sm color-cod-gray mb-20">{{ item.category.name }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="bg-body">
+                                                <div class="post-date-dark">
+                                                    <ul>
+                                                        <li>
+                                                            <span><i class="fa fa-calendar" aria-hidden="true"></i></span>{{ item.published_date }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h3 class="title-medium-dark size-sm mb-none">
+                                                    <a href="{{ item.get_absolute_url }}">{{ item.name|title|truncatewords:6 }}</a>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                               
+                            </div>
+                            <!-- Sidebar alanı SOSYAL MEDYA -->
+                            <div class="ne-sidebar sidebar-break-md col-xl-4 col-lg-5 col-md-12">
+                                {# Sosyal medya bağlantıları alanı #}
+                                <div class="sidebar-box">
+                                    <div class="item-box-light-md">
+                                        <div class="topic-border color-cod-gray mb-30">
+                                            <div class="topic-box-lg color-cod-gray">Haberi paylaş</div>
+                                        </div>
+                                        {% with share_url=request.build_absolute_uri %}
+                                        <ul class="stay-connected-color overflow-hidden">
+                                            <li class="facebook">
+                                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                                    <div class="connection-quantity text-truncate px-1">Facebook</div>
+                                                    <p class="mb-0 small text-truncate px-1">Paylas</p>
+                                                </a>
+                                            </li>
+                                            <li class="twitter">
+                                                <a href="https://twitter.com/intent/tweet?text={{ news.name|truncatechars:70|urlencode }}&url={{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                                    <div class="connection-quantity text-truncate px-1">X</div>
+                                                    <p class="mb-0 small text-truncate px-1">Paylas</p>
+                                                </a>
+                                            </li>
+                                            <li class="linkedin">
+                                                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" onclick="copyShareLink('{{ share_url|escapejs }}')">
+                                                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                                                    <div class="connection-quantity text-truncate px-1">Instagram</div>
+                                                    <p class="mb-0 small text-truncate px-1">Kopyala</p>
+                                                </a>
+                                            </li>
+                                            <li class="rss">
+                                                <a href="https://wa.me/?text={{ news.name|urlencode }}%20{{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                                    <div class="connection-quantity text-truncate px-1">WhatsApp</div>
+                                                    <p class="mb-0 small text-truncate px-1">Paylas</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            
+                                {# reklam alanı #}
+
+                                <div class="sidebar-box">
+                                    <div class="ne-banner-layout1 text-center item-box-light-md">
+                                        {% if ad_haber_detay and ad_haber_detay.is_active and ad_haber_detay.image %}
+                                            <a href="{% if ad_haber_detay.url %}{{ ad_haber_detay.url }}{% else %}#{% endif %}" target="_blank">
+                                                {% thumbnail ad_haber_detay.image "haber_sayfa_reklam" crop="center" as thumb %}
+                                                <img src="{{ thumb.url }}" alt="reklam" class="img-fluid rounded">
+                                            </a>
+                                        {% else %}
+                                            <a href="#" target="_blank">
+                                                <img src="{% static 'img/banner/banner6.jpg' %}" alt="reklam" class="img-fluid rounded">
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {#  ****************   ***********  #}
+
+                                {# Sağ taraf Tab Bölümü  #}
+                                 {# news_extras.py dosyasından gelen templatetags kullanıldı #}
+                                <div class="sidebar-box">
+                                    <div class="item-box-light-md">
+                                        <ul class="btn-tab item-inline2 block-xs nav nav-tabs" role="tablist">
+                                            <li class="nav-item">
+                                                <a href="#recent" data-toggle="tab" aria-expanded="true" class="active">Türkiye</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#popular" data-toggle="tab" aria-expanded="false">Bursa</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#common" data-toggle="tab" aria-expanded="false">Siyaset</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade active show" id="recent">
+                                                {% get_tab_news 'turkiye' news.slug 6 as turkiye_haberler %}
+                                                {% for haber in turkiye_haberler %}
+                                                <div class="position-relative mb30-list">
+                                                    <div class="media">
+                                                        {% with im=haber.images.first %}
+                                                        <a class="img-opacity-hover width50-md width50-mb" href="{{ haber.get_absolute_url }}">
+                                                            {% if im %}
+                                                                {% thumbnail im.image "130x90" crop="center" as thumb %}
+                                                                    <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid rounded">
+                                                            {% else %}
+                                                                <img src="{% static 'img/blog1.jpg' %}" alt="{{ haber.name }}" class="img-fluid rounded">
+                                                            {% endif %}
+                                                        </a>
+                                                        {% endwith %}
+                                                        <div class="media-body">
+                                                            <div class="post-date-dark">
+                                                                <ul>
+                                                                    <li>
+                                                                        <span>
+                                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                        </span>{{ haber.published_date|date:"d M Y" }}</li>
+                                                                </ul>
+                                                            </div>
+                                                            <h3 class="title-semibold-dark size-md mb-none">
+                                                                <a href="{{ haber.get_absolute_url }}">{{ haber.name|title|truncatewords:6 }}</a>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% empty %}
+                                                <p class="mb-0">Spor kategorisinde gosterilecek haber bulunamadi.</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="popular">
+                                                {% get_tab_news 'bursa' news.slug 6 as yerel_haberler %}
+                                                {% for haber in yerel_haberler %}
+                                                <div class="position-relative mb30-list">
+                                                    <div class="media">
+                                                        {% with im=haber.images.first %}
+                                                        <a class="img-opacity-hover width50-md width50-mb" href="{{ haber.get_absolute_url }}">
+                                                            {% if im %}
+                                                                {% thumbnail im.image "130x90" crop="center" as thumb %}
+                                                                    <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid  rounded">
+                                                            {% else %}
+                                                                <img src="{% static 'img/blog1.jpg' %}" alt="{{ haber.name }}" class="img-fluid rounded">
+                                                            {% endif %}
+                                                        </a>
+                                                        {% endwith %}
+                                                        <div class="media-body">
+                                                            <div class="post-date-dark">
+                                                                <ul>
+                                                                    <li>
+                                                                        <span>
+                                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                        </span>{{ haber.published_date|date:"d M Y" }}</li>
+                                                                </ul>
+                                                            </div>
+                                                            <h3 class="title-semibold-dark size-md mb-none">
+                                                                <a href="{{ haber.get_absolute_url }}">{{ haber.name|title|truncatewords:6 }}</a>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% empty %}
+                                                <p class="mb-0">Yerel kategorisinde gosterilecek haber bulunamadi.</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="common">
+                                                {% get_tab_news 'siyaset' news.slug 6 as siyaset_haberler %}
+                                                {% for haber in siyaset_haberler %}
+                                                <div class="position-relative mb30-list">
+                                                    <div class="media">
+                                                        {% with im=haber.images.first %}
+                                                        <a class="img-opacity-hover width50-md width50-mb" href="{{ haber.get_absolute_url }}">
+                                                            {% if im %}
+                                                                {% thumbnail im.image "130x90" crop="center" as thumb %}
+                                                                    <img src="{{ thumb.url }}" alt="{{ haber.name }}" class="img-fluid rounded">
+                                                            {% else %}
+                                                                <img src="{% static 'img/blog1.jpg' %}" alt="{{ haber.name }}" class="img-fluid rounded">
+                                                            {% endif %}
+                                                        </a>
+                                                        {% endwith %}
+                                                        <div class="media-body">
+                                                            <div class="post-date-dark">
+                                                                <ul>
+                                                                    <li>
+                                                                        <span>
+                                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                        </span>{{ haber.published_date|date:"d M Y" }}</li>
+                                                                </ul>
+                                                            </div>
+                                                            <h3 class="title-semibold-dark size-md mb-none">
+                                                                <a href="{{ haber.get_absolute_url }}">{{ haber.name|title|truncatewords:6 }}</a>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% empty %}
+                                                <p class="mb-0">Siyaset kategorisinde gosterilecek haber bulunamadi.</p>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# Sağ taraf Tab Bölümü Sonu  #}
+
+                                
+                                
+                    <!--       {# Sağ taraf Son Haberler Bölümü  #}
+                                 {# news_extras.py dosyasından gelen templatetags kullanıldı #}
+
+                                {% latest_news_widget 4 news.slug True %}
+
+                                {# Sağ taraf Newsletter Bölümü  #}
+                                <div class="sidebar-box">
+                                    <div class="item-box-light-md">
+                                        <div class="topic-border color-cod-gray mb-30">
+                                            <div class="topic-box-lg color-cod-gray">Newsletter</div>
+                                        </div>
+                                        <div class="newsletter-area bg-primary">
+                                            <h2 class="title-medium-light size-xl pl-10 pr-10">Bültenimize abone olarak güncellemeleri takip edin!</h2>
+                                            <img src="{% static 'img/banner/newsletter.png' %}" alt="newsletter" class="img-fluid m-auto mb-15 rounded">
+                                            <p>Bültenimize abone olarak güncellemeleri takip edin</p>
+                                            <div class="input-group stylish-input-group">
+                                                <input type="text" placeholder="Lütfen e-posta adresinizi girin" class="form-control">
+                                                <span class="input-group-addon">
+                                                    <button type="submit">
+                                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        -->      
+                                <div class="sidebar-box">
+                                    <div class="item-box-light-md">
+                                        <div class="topic-border color-cod-gray mb-25">
+                                            <div class="topic-box-lg color-cod-gray">Kategoriler</div>
+                                        </div>
+                                        <ul class="sidebar-tags2" >
+                                            {% for category in categories %}
+                                            <li style="background-color: #9dcef7;" >
+                                                <a href="{{ category.get_absolute_url }}"><i class="fa fa-map-marker "></i> {{ category.name|title }}</a>
+                                            </li>
+                                            {% endfor %}
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- News Details Page Area End Here -->
+ 
+    {% endblock %}
+
+{% block lightbox2_scripts %}
+<script src="{% static 'js/lightbox.min.js' %}"></script>
+<script src="{% static 'js/lightbox-init.js' %}"></script>
+<script>
+function copyShareLink(url) {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).catch(function() {});
+        return;
+    }
+    var tempInput = document.createElement('input');
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+}
+</script>
+{% endblock %}
+

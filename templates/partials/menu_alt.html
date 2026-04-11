@@ -1,0 +1,17 @@
+
+{% if item.has_children %}
+    <li class="nav-item dropdown dropdown-hover {% if item.get_absolute_url in request.path %}active{% endif %}">
+        <a href="{{ item.get_absolute_url }}" class="nav-link dropdown-toggle {% if item.get_absolute_url in request.path %}active{% endif %}" aria-expanded="false" style="color: #f8fafc !important;">
+            {{ item.name }}
+        </a>
+        <ul class="dropdown-menu">
+            {% for child in item.children.all %}
+                {% include "partials/menu_alt.html" with item=child %}
+            {% endfor %}
+        </ul>
+    </li>
+{% else %}
+    <li class="nav-item {% if item.get_absolute_url == request.path or item.get_absolute_url in request.path %}active{% endif %}">
+        <a href="{{ item.get_absolute_url }}" class="nav-link {% if item.get_absolute_url == request.path or item.get_absolute_url in request.path %}active{% endif %}" style="color: #f8fafc !important;">{{ item.name|title }}</a>
+    </li>
+{% endif %}

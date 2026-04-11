@@ -1,0 +1,546 @@
+ {% load static %}
+ {% load thumbnail %}
+ <div id="preloader"></div>
+        <!-- Preloader End Here -->
+        <div id="wrapper">
+            <!-- Header Area Start Here -->
+            <header>
+                <div id="header-layout3" class="header-style7">
+                    <div class="header-top-bar">
+                        
+                        <div class="top-bar-top bg-primarytextcolor border-bottom">
+                            <div class="container">
+                                <div class="row">
+    {% comment %} ---   Üst Bar Alanı HAVA DURUMU ŞEHİR... --- {% endcomment %}
+                 <div class="col-lg-8 col-md-12">
+    <ul class="news-info-list text-center--md">
+        <li>
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            {% if weather %}{{ weather.city }}, Türkiye{% else %}Konum Alınamadı{% endif %}
+        </li>
+        <li>
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <span id="current_date"></span>
+        </li>
+        
+        <li>
+            {% if weather %}
+                <img src="{{ weather.icon }}" alt="Hava Durumu" style="width: 25px; margin-right: 5px;">
+                {{ weather.temp }}&#8451; {{ weather.description }}
+            {% else %}
+                <i class="fa fa-cloud" aria-hidden="true"></i> Veri Yok
+            {% endif %}
+        </li>
+    </ul>
+</div>
+
+{% comment %} 
+ Tarihi her zaman Türkçe gün/ay adlarıyla yazdır. 
+{% endcomment %}
+<script>
+    
+    (function () {
+        var dateElement = document.getElementById('current_date');
+        if (!dateElement) {
+            return;
+        }
+
+        var now = new Date();
+        var days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+        var months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+
+        var formatted = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear() + ' ' + days[now.getDay()];
+        dateElement.textContent = formatted;
+    })();
+</script>
+
+                        {% comment %} -----   Sosyal Medya İkonları ------ {% endcomment %}
+                                    <div class="col-lg-4 d-none d-lg-block">
+                                        <ul class="header-social">
+                                            <li>
+                                                <a href="{{ site_settings.facebook }}" title="facebook">
+                                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ site_settings.twitter }}" title="twitter">
+                                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                          
+                                            
+                                            
+                                            <li>
+                                                <a href="{{ site_settings.rss }}" title="rss">
+                                                    <i class="fa fa-rss" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ site_settings.instagram }}" title="instagram">
+                                                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-menu-area bg-body border-bottom" id="sticker">
+                        <div class="container">
+                            <div class="row no-gutters d-flex align-items-center">
+                                <div class="col-lg-2 col-md-2 d-none d-lg-block">
+                 {#--------  Site Logo alanı  ------------------ #}
+                                    <div class="logo-area">
+                                        <a href="/" class="img-fluid">
+                                            {% thumbnail site_settings.logo "180x59" as logo_thumb %}
+                                            <img src="{{ logo_thumb.url }}" alt="logo" class="img-fluid">
+                                        </a>
+                                    </div>
+                                </div>
+      {% comment %} ##### -----  Menü Alanı ----- ####### {% endcomment %}
+                                <div class="col-lg-8 d-none d-lg-block position-static min-height-none">
+                                    <div class="ne-main-menu nav-item dropdown-hover">
+                                        <nav id="dropdown" class="ne-main-menu dropdown-hover">
+                                            <ul class="nav-menu">
+                                                <li class="nav-item {% if '/' == request.path %}  active{% endif %}" >
+                                                    <a class="nav-link " href="/">
+                                                        <i class="fa fa-home" aria-hidden="true" style="margin-right: 6px;"></i>
+                                                        Anasayfa
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item {% if '/kategori/bursa/' in request.path %}  active{% endif %}" >
+                                                    <a class="nav-link " href="/kategori/bursa/">
+                                                        <i class="fa fa-building" aria-hidden="true" style="margin-right: 6px;"></i>
+                                                        Bursa
+                                                    </a>
+                                                   </li>
+                                                   <li class="nav-item {% if '/kategori/mustafakemalpasa/' in request.path %}  active{% endif %}" >
+                                                    <a class="nav-link " href="/kategori/mustafakemalpasa/">
+                                                        <i class="fa fa-building" aria-hidden="true" style="margin-right: 6px;"></i>
+                                                        Mustafakemalpaşa
+                                                    </a>
+                                                   </li>
+                                                <li class="nav-item {% if 'borsa/' in request.path %}  active{% endif %}" >
+                                                    <a class="nav-link " href="/borsa/">
+                                                        <i class="fa fa-line-chart" aria-hidden="true" style="margin-right: 6px;"></i>
+                                                        Borsa
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item dropdown dropdown-hover {% if 'kategoriler/' in request.path %}active{% endif %}">
+                                                    <a href="#" class="nav-link dropdown-toggle {% if '/kategoriler/' in request.path %}active{% endif %}" aria-expanded="false">
+                                                        <i class="fa fa-list-ul" aria-hidden="true" style="margin-right: 6px;"></i>
+                                                        Kategoriler
+                                                    </a>
+                                                 <ul class="dropdown-menu">
+                                                 {% for menu in menus %}
+                                                    {% include "partials/menu_alt.html" with  item=menu %}
+                                                 {% endfor %}
+                                                    </ul>
+
+                                                    
+                                                
+                                                    
+                                               </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2 text-right position-static">
+                                    <div class="header-action-item on-mobile-fixed">
+                                        <ul>
+                                            <li>
+                                                <form id="top-search-form" class="header-search-dark">
+                                                    <input type="text" class="search-input" placeholder="Ara...." required="" style="display: none;">
+                                                    <button class="search-button">
+                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="d-none d-sm-block d-md-block d-lg-none">
+                                                <button type="button" class="login-btn" data-toggle="modal" data-target="#myModal">
+                                                    <i class="fa fa-user" aria-hidden="true"></i>Sign in
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <div id="side-menu-trigger" class="offcanvas-menu-btn offcanvas-btn-repoint">
+                                                    <a href="#" class="menu-bar">
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </a>
+                                                    <a href="#" class="menu-times close">
+                                                        <span></span>
+                                                        <span></span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+        {% comment %} ---##   MODERN DROPDOWN MENÜ STİLLERİ  --- ##{% endcomment %}
+            <style>
+                /* Modern Dropdown Menü Stilleri */
+                .ne-main-menu .nav-menu .dropdown-menu {
+                    background: linear-gradient(145deg, #1a1d2e 0%, #16213e 100%);
+                    border: 1px solid rgba(102, 126, 234, 0.2);
+                    border-radius: 12px;
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(102, 126, 234, 0.1);
+                    padding: 16px 0;
+                    margin-top: 8px;
+                    min-width: 320px;
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(-15px);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    overflow: hidden;
+                }
+
+                /* Desktop hover için dropdown açma */
+                @media (min-width: 992px) {
+                    .ne-main-menu .nav-menu .dropdown-hover:hover > .dropdown-menu,
+                    .ne-main-menu .nav-menu .dropdown:hover > .dropdown-menu {
+                        opacity: 1;
+                        visibility: visible;
+                        transform: translateY(0);
+                    }
+                }
+
+                /* Mobil için açık durum */
+                .ne-main-menu .nav-menu .dropdown.is-open > .dropdown-menu,
+                .ne-main-menu .nav-menu .dropdown-hover.is-open > .dropdown-menu {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                }
+
+                /* Dropdown item stilleri */
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item {
+                    margin: 0;
+                    padding: 0;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:last-child {
+                    border-bottom: none;
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-link {
+                    display: flex;
+                    align-items: center;
+                    padding: 14px 28px;
+                    color: #f8fafc;
+                    font-weight: 500;
+                    font-size: 15px;
+                    transition: all 0.2s ease;
+                    position: relative;
+                    text-decoration: none;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-link::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 3px;
+                    height: 0;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    transition: height 0.3s ease;
+                    border-radius: 0 3px 3px 0;
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-link:hover {
+                    background: linear-gradient(90deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.15) 100%);
+                    color: #e0e7ff;
+                    padding-left: 32px;
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-link:hover::before {
+                    height: 28px;
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item.active .nav-link {
+                    background: linear-gradient(90deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.2) 100%);
+                    color: #f1f5f9;
+                    font-weight: 600;
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item.active .nav-link::before {
+                    height: 28px;
+                }
+
+                /* İç içe dropdown'lar için */
+                .ne-main-menu .nav-menu .dropdown-menu .dropdown-menu {
+                    left: 100%;
+                    top: 0;
+                    margin-top: 0;
+                    margin-left: 8px;
+                }
+
+                /* Dropdown toggle ikon */
+                .ne-main-menu .nav-menu .dropdown-toggle::after {
+                    display: inline-block;
+                    margin-left: 8px;
+                    vertical-align: middle;
+                    content: "";
+                    border-top: 5px solid;
+                    border-right: 4px solid transparent;
+                    border-left: 4px solid transparent;
+                    transition: transform 0.3s ease;
+                }
+
+                @media (min-width: 992px) {
+                    .ne-main-menu .nav-menu .dropdown-hover:hover > .dropdown-toggle::after,
+                    .ne-main-menu .nav-menu .dropdown:hover > .dropdown-toggle::after {
+                        transform: rotate(-180deg);
+                    }
+                }
+
+                .ne-main-menu .nav-menu .dropdown.is-open > .dropdown-toggle::after,
+                .ne-main-menu .nav-menu .dropdown-hover.is-open > .dropdown-toggle::after {
+                    transform: rotate(-180deg);
+                }
+
+                /* Alt menülerde sağa ok */
+                .ne-main-menu .nav-menu .dropdown-menu .dropdown-toggle::after {
+                    content: "";
+                    border-top: 4px solid transparent;
+                    border-bottom: 4px solid transparent;
+                    border-left: 5px solid;
+                    border-right: 0;
+                    margin-left: auto;
+                    transform: none;
+                }
+
+                /* Animasyon için */
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item {
+                    animation: slideInMenu 0.3s ease forwards;
+                    opacity: 0;
+                }
+
+                @media (min-width: 992px) {
+                    .ne-main-menu .nav-menu .dropdown-hover:hover > .dropdown-menu .nav-item,
+                    .ne-main-menu .nav-menu .dropdown:hover > .dropdown-menu .nav-item {
+                        animation: slideInMenu 0.3s ease forwards;
+                    }
+                }
+
+                .ne-main-menu .nav-menu .dropdown.is-open > .dropdown-menu .nav-item,
+                .ne-main-menu .nav-menu .dropdown-hover.is-open > .dropdown-menu .nav-item {
+                    animation: slideInMenu 0.3s ease forwards;
+                }
+
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:nth-child(1) { animation-delay: 0.05s; }
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:nth-child(2) { animation-delay: 0.1s; }
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:nth-child(3) { animation-delay: 0.15s; }
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:nth-child(4) { animation-delay: 0.2s; }
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:nth-child(5) { animation-delay: 0.25s; }
+                .ne-main-menu .nav-menu .dropdown-menu .nav-item:nth-child(n+6) { animation-delay: 0.3s; }
+
+                @keyframes slideInMenu {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                /* Kategoriler butonu hover efekti */
+                .ne-main-menu .nav-menu > li > .nav-link {
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
+
+                .ne-main-menu .nav-menu > li > .nav-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 50%;
+                    transform: translateX(-50%) scaleX(0);
+                    width: 80%;
+                    height: 3px;
+                    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 3px 3px 0 0;
+                    transition: transform 0.3s ease;
+                }
+
+                .ne-main-menu .nav-menu > li > .nav-link:hover::after,
+                .ne-main-menu .nav-menu > li.active > .nav-link::after {
+                    transform: translateX(-50%) scaleX(1);
+                }
+            </style>
+
+        {% comment %} ---##   DÖVİZ KURLARI  --- ##{% endcomment %}
+             {% comment %}
+               TCMB verilerini header ticker'ında göstermek için context processor. Veriler öncelikle TCMB'nin gunluk XML kaynagindan çekilir, eksik veya bulunamayan veriler için TradingView API'si fallback olarak kullanılır. Sonuçlar 30 dakika boyunca önbellekte tutulur. {% endcomment %}
+            <style>
+                .finance-band {
+                    overflow: hidden;
+                    border-radius: 8px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    background: linear-gradient(90deg, #0b1220 0%, #172554 38%, #1e3a8a 65%, #0f172a 100%);
+                    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.35), inset 0 0 24px rgba(59, 130, 246, 0.2);
+                    height: 42px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .finance-band-track {
+                    display: flex;
+                    width: max-content;
+                    animation: finance-band-scroll 26s linear infinite;
+                    will-change: transform;
+                }
+
+                .finance-band-group {
+                    display: flex;
+                    align-items: center;
+                    flex-shrink: 0;
+                }
+
+                .finance-band-item {
+                    display: inline-flex;
+                    align-items: center;
+                    white-space: nowrap;
+                    font-size: 13px;
+                    color: #ffffff;
+                    padding: 0 16px;
+                    line-height: 1;
+                    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+                }
+
+                .finance-band-item strong {
+                    color: #bfdbfe;
+                    margin-right: 6px;
+                }
+
+                .finance-band-item.finance-usd strong { color: #38bdf8; }
+                .finance-band-item.finance-eur strong { color: #22c55e; }
+                .finance-band-item.finance-xau strong { color: #facc15; }
+                .finance-band-item.finance-bist100 strong { color: #fb7185; }
+                .finance-band-item.finance-policy strong { color: #a78bfa; }
+
+                .finance-band-sep {
+                    color: rgba(255, 255, 255, 0.45);
+                    font-size: 12px;
+                }
+
+                @keyframes finance-band-scroll {
+                    from { transform: translateX(0); }
+                    to { transform: translateX(-50%); }
+                }
+            </style>
+            <section class="container" id="band">
+                <div class="finance-band bg-body-color ml-15 pr-15 mb-10 mt-10" aria-label="Piyasa verileri akış bandı">
+                    {% if tcmb_ticker_items %}
+                        <div class="finance-band-track">
+                            <div class="finance-band-group">
+                                {% for metric in tcmb_ticker_items %}
+                                    <span class="finance-band-item finance-{{ metric.code|lower }}">
+                                        <strong>{{ metric.label }}:</strong> {{ metric.value }}
+                                    </span>
+                                    <span class="finance-band-sep">|</span>
+                                {% endfor %}
+                            </div>
+                            <div class="finance-band-group" aria-hidden="true">
+                                {% for metric in tcmb_ticker_items %}
+                                    <span class="finance-band-item finance-{{ metric.code|lower }}">
+                                        <strong>{{ metric.label }}:</strong> {{ metric.value }}
+                                    </span>
+                                    <span class="finance-band-sep">|</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="finance-band-track">
+                            <div class="finance-band-group">
+                                <span class="finance-band-item">Piyasa verileri şu an alınamadı</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+ 
+           </section>    
+         
+      
+<script>
+    (function () {
+        function isMobileWidth() {
+            return window.matchMedia('(max-width: 991.98px)').matches;
+        }
+
+        function closeAllSubmenus(root) {
+            var openItems = root.querySelectorAll('.dropdown.is-open, .dropdown-hover.is-open');
+            for (var i = 0; i < openItems.length; i++) {
+                openItems[i].classList.remove('is-open');
+                var link = openItems[i].querySelector(':scope > .dropdown-toggle');
+                if (link) {
+                    link.setAttribute('aria-expanded', 'false');
+                }
+            }
+        }
+
+        document.addEventListener('click', function (event) {
+            var navRoot = document.querySelector('.ne-main-menu .nav-menu');
+            if (!navRoot) {
+                return;
+            }
+
+            var toggle = event.target.closest('.dropdown > .dropdown-toggle, .dropdown-hover > .dropdown-toggle');
+            if (!toggle || !isMobileWidth()) {
+                if (isMobileWidth() && !event.target.closest('.ne-main-menu')) {
+                    closeAllSubmenus(navRoot);
+                }
+                return;
+            }
+
+            var parentItem = toggle.parentElement;
+            if (!parentItem) {
+                return;
+            }
+
+            var isOpen = parentItem.classList.contains('is-open');
+            if (isOpen) {
+                return;
+            }
+
+            event.preventDefault();
+            var willOpen = true;
+
+            var siblings = parentItem.parentElement ? parentItem.parentElement.children : [];
+            for (var i = 0; i < siblings.length; i++) {
+                if (siblings[i] !== parentItem) {
+                    siblings[i].classList.remove('is-open');
+                    var siblingToggle = siblings[i].querySelector(':scope > .dropdown-toggle');
+                    if (siblingToggle) {
+                        siblingToggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            }
+
+            parentItem.classList.toggle('is-open', willOpen);
+            toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        });
+
+        window.addEventListener('resize', function () {
+            if (!isMobileWidth()) {
+                var navRoot = document.querySelector('.ne-main-menu .nav-menu');
+                if (navRoot) {
+                    closeAllSubmenus(navRoot);
+                }
+            }
+        });
+    })();
+</script>

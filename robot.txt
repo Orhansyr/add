@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Admin panelini ve arama sonuçlarını tarama
+Disallow: /admin/
+Disallow: /search/
+Disallow: /accounts/
+
+# Statik dosyaları ve medyayı taramaya izin ver (Görsel SEO için kritik)
+Allow: /static/
+Allow: /media/
+
+User-agent: *
+Allow: /
+
+# Özel AI botlarına öncelik verin
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Canli ortamda kendi domaininizi kullanin
+Sitemap: https://example.com/sitemap.xml

@@ -1,0 +1,59 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Borsa Verileri Başlangıcı -->
+<div class="container my-5">
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h2 class="h3 fw-bold text-uppercase border-bottom pb-2">Canlı Borsa ve Hisse Senetleri</h2>
+            <p class="text-muted small">Türkiye hisseleri A-Z sıralı listelenir. Veriler 10 dakikalık önbellek ile yenilenir.</p>
+        </div>
+    </div>
+
+    {% if borsa_hisse_listesi %}
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Hisse</th>
+                            <th scope="col" class="text-end">Son Fiyat</th>
+                            <th scope="col" class="text-end">Değişim</th>
+                            <th scope="col" class="text-end">Hacim</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hisse in borsa_hisse_listesi %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-dark">{{ hisse.sembol }}</div>
+                                <div class="small text-muted"><strong>{{ hisse.sirket_adi }}</strong></div>
+                            </td>
+                            <td class="text-end">{{ hisse.fiyat }} TL</td>
+                            <td class="text-end fw-semibold {{ hisse.durum_class }}">
+                                {% if "success" in hisse.durum_class %}
+                                    +{{ hisse.degisim }}%
+                                {% else %}
+                                    {{ hisse.degisim }}%
+                                {% endif %}
+                            </td>
+                            <td class="text-end">{{ hisse.hacim }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center text-muted py-5">
+        Şu anda borsa verileri alınamıyor...
+    </div>
+    {% endif %}
+</div>
+<!-- Borsa Verileri Sonu -->
+
+{% endblock %}
