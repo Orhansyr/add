@@ -35,7 +35,7 @@
 </div>
 
 {% comment %} 
- Tarihi her zaman Türkçe gün/ay adlarıyla yazdır. 
+ bu script hava durumunda Tarihi her zaman Türkçe gün/ay adlarıyla yazdır. 
 {% endcomment %}
 <script>
     
@@ -137,55 +137,14 @@
                                                     {% include "partials/menu_alt.html" with  item=menu %}
                                                  {% endfor %}
                                                     </ul>
-
-                                                    
-                                                
                                                     
                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-2 col-md-2 col-sm-2 text-right position-static">
-                                    <div class="header-action-item on-mobile-fixed">
-                                        <ul>
-                                            <li>
-                                                <form id="top-search-form" class="header-search-dark">
-                                                    <input type="text" class="search-input" placeholder="Ara...." required="" style="display: none;">
-                                                    <button class="search-button">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                </form>
-                                            </li>
-                                            <li class="d-none d-sm-block d-md-block d-lg-none">
-                                                <button type="button" class="login-btn" data-toggle="modal" data-target="#myModal">
-                                                    <i class="fa fa-user" aria-hidden="true"></i>Sign in
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <div id="side-menu-trigger" class="offcanvas-menu-btn offcanvas-btn-repoint">
-                                                    <a href="#" class="menu-bar">
-                                                        <span></span>
-                                                        <span></span>
-                                                        <span></span>
-                                                    </a>
-                                                    <a href="#" class="menu-times close">
-                                                        <span></span>
-                                                        <span></span>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-        {% comment %} ---##   MODERN DROPDOWN MENÜ STİLLERİ  --- ##{% endcomment %}
+                                   <!-- Offcanvas Menu End -->
+        {% comment %} ---####   MODERN DROPDOWN MENÜ STİLLERİ  --- ####{% endcomment %}
             <style>
                 /* Modern Dropdown Menü Stilleri */
                 .ne-main-menu .nav-menu .dropdown-menu {
@@ -237,8 +196,9 @@
                     align-items: center;
                     padding: 14px 28px;
                     color: #f8fafc;
-                    font-weight: 500;
-                    font-size: 15px;
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 1.45;
                     transition: all 0.2s ease;
                     position: relative;
                     text-decoration: none;
@@ -381,8 +341,117 @@
                     transform: translateX(-50%) scaleX(1);
                 }
             </style>
+    {% comment %} ---##   MODERN DROPDOWN MENÜ STİLLERİ SONU --- ##{% endcomment %}
 
-        {% comment %} ---##   DÖVİZ KURLARI  --- ##{% endcomment %}
+                                <div class="col-lg-2 col-md-2 col-sm-2 text-right position-static">
+                                    <div class="header-action-item on-mobile-fixed">
+                                        <ul>
+                                            <li> 
+                                            {% comment %} ###-----  Arama Butonu ----- ###{% endcomment %}
+                                                <form action="{% url 'pages:news_search' %}" method="GET" id="top-search-form" class="header-search-dark">
+                                                    <input type="text" id="top-search-input" class="search-input" name="q" placeholder="Haber başlığı ara..." value="{{ query|default:'' }}" required="" style="display: none;">
+                                                    <button class="search-button">
+                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            {% comment %} ###-----  Yan Menü header ikon kısmı (offcanvas menu-hamburger) ----- ###{% endcomment %}
+                                     
+                                            <li class="d-none d-sm-block d-md-block d-lg-none">
+                                                <button type="button" class="login-btn" data-toggle="modal" data-target="#myModal">
+                                                    <i class="fa fa-user" aria-hidden="true"></i>Sign in
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <div id="side-menu-trigger" class="offcanvas-menu-btn offcanvas-btn-repoint">
+                                                    <a href="#" class="menu-bar">
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </a>
+                                                    <a href="#" class="menu-times close">
+                                                        <span></span>
+                                                        <span></span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+                   <!-- Yan Menü Offcanvas Menu Start -->
+            <div id="offcanvas-body-wrapper" class="offcanvas-body-wrapper">
+                <div id="offcanvas-nav-close" class="offcanvas-nav-close offcanvas-menu-btn">
+                    <a href="#" class="menu-times re-point">
+                        <span></span>
+                        <span></span>
+                    </a>
+                </div>
+                <div class="offcanvas-main-body">
+                    <ul id="accordion" class="offcanvas-nav panel-group">
+                        <li class="panel panel-default">
+                            <div class="panel-heading">
+                                <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="/">
+                                    <i class="fa fa-home" aria-hidden="true"></i>Anasayfa</a>
+                            </div>
+                            
+                        </li>
+                        <li class="panel panel-default">
+                            <div class="panel-heading">
+                                <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="{% url 'borsa' %}">
+                                    <i class="fa fa-file-text" aria-hidden="true"></i>Borsa</a>
+                            </div>
+                           
+                        </li>
+                        <li>
+                            <a href="{% url 'eczane' %}">
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>Nöbetçi Eczaneler</a>
+                        </li>
+                        
+                        <li class="panel panel-default">
+                            <div class="panel-heading">
+                                <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="/kategori/mustafakemalpasa/">
+                                    <i class="fa fa-newspaper-o" aria-hidden="true"></i>Yerel Haberler</a>
+                            </div>
+                        </li>
+                        
+                        <li class="panel panel-default">
+                            <div class="panel-heading">
+                                <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                    <i class="fa fa-archive" aria-hidden="true"></i>Haber Kategorileri</a>
+                            </div>
+                            <div aria-expanded="false" id="collapseFour" role="tabpanel" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="offcanvas-sub-nav">
+                                        {% for menu in menus %}
+                                        <li>
+                                            <a href="{{ menu.get_absolute_url }}">{{ menu.name}}</a>
+                                        </li>
+                                        {% endfor %}
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank" rel="noopener noreferrer  ">
+                                <i class="fa fa-whatsapp" aria-hidden="true"></i>Haber Paylaşın</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        
+
+
+            {% comment %} ---##   DÖVİZ KURLARI  --- ##{% endcomment %}
              {% comment %}
                TCMB verilerini header ticker'ında göstermek için context processor. Veriler öncelikle TCMB'nin gunluk XML kaynagindan çekilir, eksik veya bulunamayan veriler için TradingView API'si fallback olarak kullanılır. Sonuçlar 30 dakika boyunca önbellekte tutulur. {% endcomment %}
             <style>
@@ -474,7 +543,7 @@
  
            </section>    
          
-      
+    {% comment %} ---##   DROPDOWN MENÜLERİN MOBİLDE ÇALIŞMASI İÇİN GEREKLİ OLAN JS KODU  --- ##{% endcomment %}
 <script>
     (function () {
         function isMobileWidth() {

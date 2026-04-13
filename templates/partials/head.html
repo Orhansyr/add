@@ -25,6 +25,7 @@
         {% for cat in categories %}
         <link rel="alternate" type="application/rss+xml" title="{{ cat.name }} RSS" href="{{ request.scheme }}://{{ request.get_host }}/rss/kategori/{{ cat.slug }}/">
         {% endfor %}
+        
         <!-- Normalize CSS -->
         <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
         <!-- Main CSS -->
@@ -58,7 +59,7 @@
         {% if site_structured_data_json %}
         <script type="application/ld+json">{{ site_structured_data_json|safe }}</script>
         {% endif %}
-        {% if news_structured_data_json %} # Haber DETAY sayfasında  veriyi eklemek için
+        {% if news_structured_data_json %} {# Haber DETAY sayfasının  verilerini eklemek için #}
         <script type="application/ld+json">{{ news_structured_data_json|safe }}</script>
         {% endif %}
 

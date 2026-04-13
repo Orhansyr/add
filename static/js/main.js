@@ -40,19 +40,28 @@
         });
       }),
     e(document).on("click", "#top-search-form .search-button", function (a) {
+      var t = e(this),
+        n = t.prev("input.search-input"),
+        o = (n.val() || "").trim(),
+        r = t.closest("form");
+      if (n.is(":visible") && o.length)
+        return a.preventDefault(), r.length && r.get(0).submit(), !1;
       return (
         a.preventDefault(),
-        e(this)
-          .prev("input.search-input")
-          .animate(
-            {
-              width: ["toggle", "swing"],
-              height: ["toggle", "swing"],
-              opacity: "toggle",
-            },
-            500,
-            "linear"
-          ),
+        n.is(":visible")
+          ? n.focus()
+          : n.animate(
+              {
+                width: ["toggle", "swing"],
+                height: ["toggle", "swing"],
+                opacity: "toggle",
+              },
+              500,
+              "linear",
+              function () {
+                n.focus();
+              }
+            ),
         !1
       );
     }),

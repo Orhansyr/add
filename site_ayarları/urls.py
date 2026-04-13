@@ -7,6 +7,7 @@ from .feeds import CategoryNewsFeed, LatestNewsFeed
 urlpatterns = [
     path("rss/", cache_page(60 * 60)(LatestNewsFeed()), name="rss_feed"),
     path("borsa/",views.borsa , name="borsa"),
+    path("nobetci-eczane/", views.eczane, name="eczane"),
 
     
 ]

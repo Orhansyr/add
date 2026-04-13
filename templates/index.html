@@ -218,7 +218,7 @@
                                 <!-- Yazar bazında haberleri gruplayarak göstermek için Django'nun regroup etiketini kullanacağız.
                                      Bu örnekte, haberleri yazarlarına göre gruplayacağız. Her grup, o yazara ait haberlerin bir listesini içerecek. -->
                                 <!--  group = {
-                                          'grouper': <Author object>,  # Yazarın objesi
+                                          'grouper': <Author object>,  # Yazarın objesi 
                                           'list': [<News1>, <News2>, ...]  # Bu yazarın tüm haberleri
                                          } yani: news — gruplandırılacak liste
                                               by author — yazara göre grupla
@@ -412,21 +412,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Haberleri sekmeler halinde göstermek için tab yapısı SONU -->
+                    {% comment %} Haberleri sekmeler halinde göstermek için tab yapısı SONU {% endcomment %}
 
+{% comment %} RSS beslemeleri için sidebar kısmında bir bölüm oluşturuyoruz. {% endcomment %}
                             <div class="sidebar-box item-box-light-md-less30">
                                 <div class="topic-border color-cinnabar mb-20">
-                                    <div class="topic-box-lg color-cinnabar">Icerik Bolumleri (RSS)</div>
+                                    <div class="topic-box-lg color-cinnabar">Haber Yayınla (RSS)</div>
                                 </div>
                                 <ul class="mb-0 pl-20">
                                     <li class="mb-8">
                                         <a href="/rss/" target="_blank" rel="noopener noreferrer">Tum Haberler RSS</a>
                                     </li>
-                                    {% for cat in categories %}
-                                    <li class="mb-8">
-                                        <a href="/rss/kategori/{{ cat.slug }}/" target="_blank" rel="noopener noreferrer">{{ cat.name }} RSS</a>
-                                    </li>
-                                    {% endfor %}
+                                   
                                 </ul>
                             </div>
                         </div>

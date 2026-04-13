@@ -1,0 +1,308 @@
+
+
+
+{% extends "partials/base.html" %}
+{% load static %}
+{% load thumbnail %}
+ 
+{% block content %}
+            <style>
+                .search-hero-wrap {
+                    padding: 22px 15px 6px;
+                }
+
+                .search-hero {
+                    max-width: 780px;
+                    margin: 0 auto;
+                    text-align: center;
+                    background: linear-gradient(145deg, #ffffff 0%, #f6f8fc 100%);
+                    border: 1px solid rgba(17, 24, 39, 0.08);
+                    border-radius: 18px;
+                    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+                    padding: 24px 20px;
+                }
+
+                .search-hero-title {
+                    margin: 0 0 8px;
+                    font-size: clamp(26px, 4vw, 36px);
+                    line-height: 1.2;
+                    color: #111827;
+                    font-weight: 800;
+                    letter-spacing: 0.2px;
+                }
+
+                .search-hero-query {
+                    margin: 0;
+                    color: #4b5563;
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+
+                .search-hero-query span {
+                    color: #0f172a;
+                    font-weight: 700;
+                }
+
+                .category-news-grid .category-news-col {
+                    display: flex;
+                }
+
+                .category-news-grid .category-news-card {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .category-news-grid .category-news-media {
+                    position: relative;
+                    height: 206px;
+                    overflow: hidden;
+                    border-radius: 14px;
+                    background: #f3f4f6;
+                    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+                    transition: box-shadow 0.28s ease, transform 0.28s ease;
+                }
+
+                .category-news-grid .category-news-badge {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 4;
+                    display: inline-block;
+                    padding: 5px 10px;
+                    border-radius: 999px;
+                    background: rgba(20, 27, 39, 0.72);
+                    color: #ffffff;
+                    font-size: 11px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    backdrop-filter: blur(3px);
+                }
+
+                .category-news-grid .category-news-media.img-overlay-hover:before,
+                .category-news-grid .category-news-media.img-overlay-hover:after {
+                    pointer-events: none;
+                }
+
+                .category-news-grid .category-news-media .category-news-link {
+                    position: relative;
+                    z-index: 2;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 14px;
+                    overflow: hidden;
+                }
+
+                .category-news-grid .category-news-media .category-news-link:after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.26) 100%);
+                    opacity: 0.45;
+                    transition: opacity 0.28s ease;
+                    pointer-events: none;
+                    z-index: 2;
+                }
+
+                .category-news-grid .category-news-media img,
+                .category-news-grid .category-news-media iframe,
+                .category-news-grid .category-news-media video {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
+
+                .category-news-grid .category-news-media img,
+                .category-news-grid .category-news-media video {
+                    object-fit: cover;
+                }
+
+                .category-news-grid .category-news-image {
+                    transform: scale(1);
+                    filter: saturate(102%);
+                    transition: transform 0.38s ease, filter 0.38s ease;
+                }
+
+                .category-news-grid .category-news-card:hover .category-news-media {
+                    transform: translateY(-2px);
+                    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+                }
+
+                .category-news-grid .category-news-card:hover .category-news-image {
+                    transform: scale(1.08);
+                    filter: saturate(115%) contrast(104%);
+                }
+
+                .category-news-grid .category-news-card:hover .category-news-link:after {
+                    opacity: 0.2;
+                }
+
+                .category-news-grid .category-news-title {
+                    line-height: 1.35;
+                    min-height: calc(1.35em * 2);
+                    margin-bottom: 0;
+                }
+
+                .category-news-grid .category-news-title a {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    word-break: break-word;
+                    color: #1c2430;
+                    font-weight: 700;
+                    letter-spacing: 0.1px;
+                    transition: color 0.24s ease;
+                }
+
+                .category-news-grid .category-news-content {
+                    position: relative;
+                    padding: 14px 14px 12px;
+                    border-radius: 12px;
+                    background: linear-gradient(160deg, #ffffff 0%, #f6f8fb 100%);
+                    border: 1px solid rgba(25, 42, 70, 0.08);
+                    box-shadow: 0 8px 20px rgba(14, 28, 51, 0.08);
+                    transition: box-shadow 0.26s ease, transform 0.26s ease, border-color 0.26s ease;
+                }
+
+                .category-news-grid .category-news-content:before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    height: 3px;
+                    border-radius: 12px 12px 0 0;
+                    background: linear-gradient(90deg, #ff9a6d, #ffcf6d);
+                    opacity: 0.85;
+                }
+
+                .category-news-grid .category-news-card:hover .category-news-content {
+                    transform: translateY(-2px);
+                    border-color: rgba(255, 154, 109, 0.28);
+                    box-shadow: 0 12px 26px rgba(14, 28, 51, 0.12);
+                }
+
+                .category-news-grid .category-news-card:hover .category-news-title a {
+                    color: #f05a28;
+                }
+
+                .category-news-grid .category-news-content .post-date-dark {
+                    margin-bottom: 8px;
+                }
+
+                .category-news-grid .category-news-content .post-date-dark ul {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px 14px;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                .category-news-grid .category-news-content .post-date-dark li {
+                    color: #5c6676;
+                    font-size: 13px;
+                    font-weight: 500;
+                }
+
+                .category-news-grid .category-news-content .post-date-dark a {
+                    color: #2d3a4f;
+                    transition: color 0.24s ease;
+                }
+
+                .category-news-grid .category-news-content .post-date-dark a:hover {
+                    color: #f05a28;
+                }
+            </style>
+           
+            
+            <!-- Gallery Page Area Start Here -->
+            <section class="search-hero-wrap ">
+                <div class="search-hero ">
+                    <h1 class="search-hero-title">Arama Sonuçları</h1>
+                    <p class="search-hero-query">Arama terimi: <span>" {{ query }}"</span></p>
+                </div>
+            </section>
+
+            <section class="bg-dark section-space-default">
+                <div class="container menu-list-wrapper">
+                    <div class="row zoom-gallery menu-list category-news-grid">
+                        {% for item in results %}
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 menu-item category-news-col {% if forloop.counter > 6 %}hidden{% endif %}">
+                            <article class="gallery-layout-1 mb-40 border-bottom pb-10 category-news-card">
+                                <div class="popup-icon-hover img-overlay-hover mb-30 category-news-media">
+                                    <span class="category-news-badge">{{ item.category.name }}</span>
+                                    {% with first_image=item.images.first first_video=item.videos.first %}
+                                        {% if first_image %}
+                                            {% thumbnail first_image.image "category" crop="center" as im %}
+                                            <a class="category-news-link" href="{{ item.get_absolute_url }}">
+                                                <img src="{{ im.url }}" alt="{{ item.name }}" class="width-100 img-fluid category-news-image">
+                                            </a>
+                                        {% elif first_video and first_video.youtube_url %}
+                                            <iframe src="{{ first_video.get_embed_url }}" width="310" height="206" style="border:0;position:relative;z-index:5;pointer-events:auto;" allowfullscreen allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                                        {% elif first_video and first_video.video_file %}
+                                            <video class="img-fluid" style="border:0;position:relative;z-index:5;pointer-events:auto;" controls preload="metadata">
+                                                <source src="{{ first_video.video_file.url }}" type="video/mp4">
+                                                Tarayiciniz video etiketini desteklemiyor.
+                                            </video>
+                                        {% else %}
+                                            <a class="category-news-link" href="{{ item.get_absolute_url }}">
+                                                <img src="{% static 'img/news/news170.jpg' %}" alt="{{ item.name }}" class="width-100 img-fluid category-news-image">
+                                            </a>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div class="category-news-content">
+                                    <div class="post-date-dark">
+                                        <ul>
+                                            <li>
+                                                <span>Yazar - </span>
+                                                <a href="{% if item.author %}{{ item.author.get_absolute_url }}{% else %}#{% endif %}">
+                                                    {% if item.author %}{{ item.author.name }}{% else %}Bölge Gazetesi{% endif %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>{{ item.published_date|date:"d M Y" }}</li>
+                                        </ul>
+                                    </div>
+                                    <h3 class="title-semibold-dark size-c22 category-news-title">
+                                        <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
+                                    </h3>
+                                </div>
+                            </article>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-info" role="alert">Malesef Haber Bulunamadı.</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                 <!-- daha fazla gör.. button -->
+                    {% if results|length > 6 %}
+                    <div class="row mt-30">
+                        <div class="col-12">
+                            <div class="loadmore text-center">
+                                <a href="#" class="btn-gtf-dtp-50">
+                                    <i class="fa fa-circle-o-notch fa-spinner fa-spin" aria-hidden="true"></i>Daha fazla gör ...</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+            <!-- Gallery Page Area End Here -->
+           
+           
+           
+    
+        
+        
+{% endblock  %}        

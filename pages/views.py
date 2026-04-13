@@ -91,9 +91,19 @@ def authors(request, slug):
     return render(request, "authors.html", context)
 
 
-def contact(request):
-    context={}
-    return render(request, "contact.html", context)
+def search(request):
+    from django.db.models import Q
+    query = request.GET.get("q", "")
+    results = []
+    if query:
+        results = (
+            News.objects.filter(Q(name__icontains=query) | Q(content__icontains=query), is_active=True)
+            .select_related("category", "author")
+            .prefetch_related("images")
+            .order_by("-published_date")
+    )
+    context = {"query": query, "results": results}
+    return render(request, "search.html", context)
 
 
 

@@ -1,5 +1,5 @@
-site.txt
-.env
+site.txt/
+.env/
 
 # Local tools/files
 .qodo/
@@ -32,5 +32,5 @@ staticfiles/
 Thumbs.db
 
 # Test files
-.env.docker.example
-.env.host.example
+.env.docker.example/
+.env.host.example/

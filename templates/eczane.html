@@ -1,0 +1,154 @@
+{% load static %}
+<style>
+	.eczane-wrap {
+		width: min(1200px, 100%);
+		margin: 20px auto;
+		padding: 0 12px;
+	}
+
+	.eczane-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px;
+		align-items: stretch;
+	}
+
+	.eczane-card {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background: #ffffff;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		border-radius: 14px;
+		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+		overflow: hidden;
+		text-align: center;
+	}
+
+	.eczane-card > a {
+		display: block;
+	}
+
+	.eczane-card img {
+		width: 100%;
+		height: 92px;
+		object-fit: contain;
+		object-position: center;
+		background: #ffffff;
+		display: block;
+	}
+
+	.eczane-card iframe {
+		width: 100%;
+		height: 260px;
+		flex: 1;
+		border: none;
+		display: block;
+		background: #f8fafc;
+	}
+
+	.eczane-actions {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin: 20px auto 6px;
+	}
+
+	.eczane-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 44px;
+		padding: 10px 16px;
+		border-radius: 999px;
+		border: 1px solid #d0d7e2;
+		background: linear-gradient(180deg, #ffffff 0%, #eef3fb 100%);
+		color: #0f172a;
+		font-weight: 700;
+		font-size: 14px;
+		text-decoration: none;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.eczane-btn:hover {
+		transform: translateY(-1px);
+		border-color: #94a3b8;
+		box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+		color: #0f172a;
+		text-decoration: none;
+	}
+
+	.eczane-btn--primary {
+		border-color: transparent;
+		background: linear-gradient(135deg, #1d4ed8 0%, #0ea5e9 100%);
+		color: #ffffff;
+	}
+
+	.eczane-btn--primary:hover {
+		color: #ffffff;
+		border-color: transparent;
+	}
+
+	.eczane-btn--soft-orange {
+		border-color: #fdba74;
+		background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+		color: #9a3412;
+	}
+
+	.eczane-btn--soft-orange:hover {
+		border-color: #fb923c;
+		background: linear-gradient(135deg, #ffe2c2 0%, #fdbb7a 100%);
+		color: #7c2d12;
+	}
+
+	@media (max-width: 991.98px) {
+		.eczane-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 767.98px) {
+		.eczane-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<div class="eczane-wrap">
+	<div class="eczane-grid">
+		<div class="eczane-card">
+			<a href="https://www.eczaneler.gen.tr/nobetci-bursa-mustafakemalpasa" class=" w-100 " target="_blank" rel="noopener noreferrer">
+				<img src="{% static 'img/eczane.jpg' %}" alt="Mustafakemalpasa nobetci eczaneleri">
+			</a>
+			<iframe src="https://www.eczaneler.gen.tr/iframe.php?lokasyon=1535" name="Mustafakemalpasa nobetci eczaneleri" title="Mustafakemalpasa nobetci eczane listesi"></iframe>
+		</div>
+
+		<div class="eczane-card">
+			<a href="https://www.eczaneler.gen.tr/nobetci-bursa-karacabey" target="_blank" rel="noopener noreferrer">
+				<img src="{% static 'img/eczane.jpg' %}" alt="Karacabey nobetci eczaneleri">
+			</a>
+			<iframe src="https://www.eczaneler.gen.tr/iframe.php?lokasyon=1434" name="Karacabey nobetci eczaneleri" title="Karacabey nobetci eczane listesi"></iframe>
+		</div>
+
+		<div class="eczane-card">
+			<a href="https://www.eczaneler.gen.tr/nobetci-balikesir-susurluk" target="_blank" rel="noopener noreferrer">
+				<img src="{% static 'img/eczane.jpg' %}" alt="Susurluk nobetci eczaneleri">
+			</a>
+			<iframe src="https://www.eczaneler.gen.tr/iframe.php?lokasyon=1644" name="Susurluk nobetci eczaneleri" title="Susurluk nobetci eczane listesi"></iframe>
+		</div>
+	</div>
+     <br>
+    <hr class="my-4 mb-4 border-2 rounded" >
+    <br>
+
+<section>
+	<div class="eczane-actions">
+        <a class="eczane-btn eczane-btn--soft-orange" href="javascript:history.back()">Geri</a>
+		<a class="eczane-btn eczane-btn--primary" href="https://www.eczaneler.gen.tr/" target="_blank" rel="noopener noreferrer">Tum Nobetci Eczaneleri Goruntule</a>
+		
+		<a class="eczane-btn eczane-btn--soft-orange" href="/">Anasayfa</a>
+	</div>
+    </section>
+</div>
+

@@ -9,6 +9,6 @@ urlpatterns = [
     path("kategori/<slug:slug>/", views.category_list, name="category_list"),
     path("haber/<slug:slug>/", views.news_detail, name="news_detail"),
     path("yazar/<slug:slug>/", views.authors, name="authors"),
-    path("iletisim/", views.contact, name="iletisim"),
-    #path("feed/", views.feed, name="feed"),
+    path("search/", views.search, name="news_search"),
+    
 ]

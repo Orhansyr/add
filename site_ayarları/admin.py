@@ -31,7 +31,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             "fields": ("google_analytics_id", "google_search_console_code", "google_adsense_client_id")
         }),
         ("İletişim Bilgileri", {
-            "fields": ("phone", "email", "address", "phone2", "email2")
+            "fields": ("whatsapp_number", "phone", "email", "address", "phone2", "email2")
         }),
         ("Sosyal Medya", {
             "fields": ("facebook", "instagram", "twitter", "linkedin", "youtube", "rss")

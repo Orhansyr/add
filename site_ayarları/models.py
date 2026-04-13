@@ -19,6 +19,7 @@ class SiteSettings(models.Model):
 
 
     # İletişim bilgileri
+    whatsapp_number = models.CharField("WhatsApp Numarası", max_length=20, blank=True, null=True)   
     phone = models.CharField("Telefon", max_length=50, blank=True, null=True)
     phone2 = models.CharField("Telefon-2", max_length=50, blank=True, null=True)
     email = models.EmailField("E-posta", blank=True, null=True)
@@ -28,12 +29,12 @@ class SiteSettings(models.Model):
     
 
     # Sosyal medya
-    facebook = models.URLField("Facebook", default="#" )
-    instagram = models.URLField("Instagram", default="#" )
-    twitter = models.URLField("Twitter", default="#" )
-    linkedin = models.URLField("LinkedIn", default="#" )
-    youtube = models.URLField("YouTube", default="#" )
-    rss = models.URLField("RSS", default="#" )
+    facebook = models.URLField("Facebook", blank=True, null=True )
+    instagram = models.URLField("Instagram", blank=True, null=True  )
+    twitter = models.URLField("Twitter", blank=True, null=True )
+    linkedin = models.URLField("LinkedIn", blank=True, null=True )
+    youtube = models.URLField("YouTube", blank=True, null=True )
+    rss = models.URLField("RSS", blank=True, null=True)
 
     # Harita iframe kodu
     google_map_iframe = models.TextField("Google Maps Embed Kodu", blank=True, null=True)
