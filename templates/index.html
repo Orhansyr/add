@@ -8,7 +8,36 @@
 
 
     
+{% comment %} ###--- Slider Bölümü Start Here  ---### {% endcomment %}
+    {% comment %} nivo slider kullanıldı {% endcomment %}
+{% block slider_styles %}
+<link rel="stylesheet" href="{% static 'vendor/slider/css/nivo-slider.css' %}" type="text/css" />
+  <style>
+    /* Easy Thumbnails Slider Styles */
+    .slides {
+      overflow: hidden;
+    }
 
+    .slider-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 690 / 418;
+      object-fit: cover;
+    }
+
+    /* Ensure parent containers respect image dimensions */
+    .main-slider1 .preview-1 .slides {
+      width: 100%;
+      max-height: 100%;
+    }
+
+    .nivo-slice,
+    .nivo-caption {
+      max-width: 100%;
+    }
+  </style>
+{% endblock %}
         
             
 
@@ -16,8 +45,9 @@
             
         
 
-            <!-- Slider Bölümü Start Here -->
-            <section class="section-space-bottom">
+{% comment %} ###--- Slider Bölümü Start Here  ---### {% endcomment %}
+    
+ <section class="section-space-bottom">
                 <div class="container">
                     <div class="row no-gutters">
                         <div class="col-lg-8 col-12">
@@ -480,158 +510,6 @@
             </section>
             <!-- Videos Bölüm sonu  -->
 
-
-
-            <!-- Category Area Start Here -->
-            {% comment %}
-            <section class="bg-body section-space-less10">
-                <div class="container">
-                    <div class="row tab-space5">
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
-                                <img src="{% static 'img/category/ctg10.jpg' %}" alt="news" class="img-fluid width-100">
-                                <div class="content p-30-r">
-                                    <div class="ctg-title-xs">Food</div>
-                                    <h3 class="title-regular-light size-lg">
-                                        <a href="post-style-1.html">neresi neresi</a>
-                                    </h3>
-                                    <div class="post-date-light d-block d-sm-none d-md-block">
-                                        <ul>
-                                            <li>
-                                                <span>by</span>
-                                                <a href="single-news-1.html">Adams</a>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                </span>March 22, 2017</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
-                                <img src="{% static 'img/category/ctg11.jpg' %}" alt="news" class="img-fluid width-100">
-                                <div class="content p-30-r">
-                                    <div class="ctg-title-xs">Food</div>
-                                    <h3 class="title-regular-light size-lg">
-                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
-                                    </h3>
-                                    <div class="post-date-light d-block d-sm-none d-md-block">
-                                        <ul>
-                                            <li>
-                                                <span>by</span>
-                                                <a href="single-news-1.html">Adams</a>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                </span>March 22, 2017</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
-                                <img src="img/category/ctg12.jpg" alt="news" class="img-fluid width-100">
-                                <div class="content p-30-r">
-                                    <div class="ctg-title-xs">Food</div>
-                                    <h3 class="title-regular-light size-lg">
-                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
-                                    </h3>
-                                    <div class="post-date-light d-block d-sm-none d-md-block">
-                                        <ul>
-                                            <li>
-                                                <span>by</span>
-                                                <a href="single-news-1.html">Adams</a>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                </span>March 22, 2017</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
-                                <img src="img/category/ctg13.jpg" alt="news" class="img-fluid width-100">
-                                <div class="content p-30-r">
-                                    <div class="ctg-title-xs">Food</div>
-                                    <h3 class="title-regular-light size-lg">
-                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
-                                    </h3>
-                                    <div class="post-date-light d-block d-sm-none d-md-block">
-                                        <ul>
-                                            <li>
-                                                <span>by</span>
-                                                <a href="single-news-1.html">Adams</a>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                </span>March 22, 2017</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
-                                <img src="img/category/ctg14.jpg" alt="news" class="img-fluid width-100">
-                                <div class="content p-30-r">
-                                    <div class="ctg-title-xs">Food</div>
-                                    <h3 class="title-regular-light size-lg">
-                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
-                                    </h3>
-                                    <div class="post-date-light d-block d-sm-none d-md-block">
-                                        <ul>
-                                            <li>
-                                                <span>by</span>
-                                                <a href="single-news-1.html">Adams</a>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                </span>March 22, 2017</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                            <div class="category-box-layout1 overlay-dark-level-2 img-grayscale-hover text-center mb-10">
-                                <img src="img/category/ctg15.jpg" alt="news" class="img-fluid width-100">
-                                <div class="content p-30-r">
-                                    <div class="ctg-title-xs">Food</div>
-                                    <h3 class="title-regular-light size-lg">
-                                        <a href="post-style-1.html">Boti kebab is here summer drinks Recipe by Healthy Kadai</a>
-                                    </h3>
-                                    <div class="post-date-light d-block d-sm-none d-md-block">
-                                        <ul>
-                                            <li>
-                                                <span>by</span>
-                                                <a href="single-news-1.html">Adams</a>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                </span>March 22, 2017</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-{% endcomment %}
-            
-          
 {% endblock %}
 
   

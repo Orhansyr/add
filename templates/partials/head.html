@@ -42,7 +42,9 @@
         <!-- Main Menu CSS -->
         <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
         <!-- Nivo Slider CSS-->
-        <link rel="stylesheet" href="{% static 'vendor/slider/css/nivo-slider.css' %}" type="text/css" />
+        {% block slider_styles %}
+        {% endblock %}
+
         <link rel="stylesheet" href="{% static 'vendor/slider/css/preview.css' %}" type="text/css" media="screen" />
         <!-- Magnific CSS -->
         <link rel="stylesheet" type="text/css" href="{% static 'css/magnific-popup.css' %}">

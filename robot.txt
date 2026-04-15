@@ -28,3 +28,5 @@ Allow: /
 
 # Canli ortamda kendi domaininizi kullanin
 Sitemap: https://example.com/sitemap.xml
+
+python manage.py shell -c "from django.core.cache import cache; cache.clear(); print('cache temizlendi')"

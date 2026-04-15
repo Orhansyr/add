@@ -93,8 +93,12 @@
                  {#--------  Site Logo alanı  ------------------ #}
                                     <div class="logo-area">
                                         <a href="/" class="img-fluid">
+                                            {% if site_settings.logo %}
                                             {% thumbnail site_settings.logo "180x59" as logo_thumb %}
                                             <img src="{{ logo_thumb.url }}" alt="logo" class="img-fluid">
+                                            {% else %}
+                                            <img src="{% static 'img/logo.png' %}" alt="logo" class="img-fluid">
+                                            {% endif %}
                                         </a>
                                     </div>
                                 </div>
@@ -385,6 +389,8 @@
                     </div>
                 </div>
             </header>
+
+
                    <!-- Yan Menü Offcanvas Menu Start -->
             <div id="offcanvas-body-wrapper" class="offcanvas-body-wrapper">
                 <div id="offcanvas-nav-close" class="offcanvas-nav-close offcanvas-menu-btn">
@@ -393,6 +399,8 @@
                         <span></span>
                     </a>
                 </div>
+
+
                 <div class="offcanvas-main-body">
                     <ul id="accordion" class="offcanvas-nav panel-group">
                         <li class="panel panel-default">

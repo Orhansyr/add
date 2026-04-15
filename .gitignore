@@ -1,5 +1,8 @@
 site.txt/
 .env/
+.env
+site.txt
+site.txt/
 
 # Local tools/files
 .qodo/

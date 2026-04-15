@@ -1,7 +1,7 @@
 from django.urls import path
 from site_ayarları import views
 from django.views.decorators.cache import cache_page
-from .feeds import CategoryNewsFeed, LatestNewsFeed
+from .feeds import  LatestNewsFeed
 
 
 urlpatterns = [

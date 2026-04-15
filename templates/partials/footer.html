@@ -1,192 +1,131 @@
 {% load static %}
-
+{% load thumbnail %}
+{%comment %} --- sol taraf footer --- {% endcomment %}
        <footer>
                 <div class="footer-area-top">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-4 col-md-6 col-sm-12">
                                 <div class="footer-box">
-                                    <h2 class="title-bold-light title-bar-left text-uppercase">Most Viewed Posts</h2>
+                                    <h2 class="title-bold-light title-bar-left text-uppercase">Son Haberler</h2>
                                     <ul class="most-view-post">
+                                        {% for haber in footer_news %}
+                                          
                                         <li>
                                             <div class="media">
-                                                <a href="{% static 'post-style-1.html' %}">
-                                                    <img src="{% static 'img/footer/post1.jpg' %}" alt="post" class="img-fluid">
+                                                <a href="{{ haber.get_absolute_url }}">
+                                                    {% with first_image=haber.images.first %}
+                                                        {% if first_image and first_image.image %}
+                                                            {% thumbnail first_image.image "60x34" crop="center" as im %}
+                                                                <img src="{{ im.url }}" alt="{{ haber.name }}" class="img-fluid">
+                                                            
+                                                        {% else %}
+                                                            <img src="{% static 'img/banner/play.png' %}" alt="{{ haber.name }}" class="img-fluid" width="60" height="34">
+                                                        {% endif %}
+                                                    {% endwith %}
                                                 </a>
                                                 <div class="media-body">
                                                     <h3 class="title-medium-light size-md mb-10">
-                                                        <a href="#">Basketball Stars Face Off itim ate Playoff Beard Battle</a>
+                                                        <a href="{{ haber.get_absolute_url }}">{{ haber.name }}</a>
                                                     </h3>
                                                     <div class="post-date-light">
                                                         <ul>
                                                             <li>
                                                                 <span>
                                                                     <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                </span>November 11, 2017</li>
+                                                                </span>{{ haber.published_date|date:"F d, Y" }}</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="media">
-                                                <a href="post-style-2.html">
-                                                    <img src="img/footer/post2.jpg" alt="post" class="img-fluid">
-                                                </a>
-                                                <div class="media-body">
-                                                    <h3 class="title-medium-light size-md mb-10">
-                                                        <a href="#">Basketball Stars Face Off in ate Playoff Beard Battle</a>
-                                                    </h3>
-                                                    <div class="post-date-light">
-                                                        <ul>
-                                                            <li>
-                                                                <span>
-                                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                </span>August 22, 2017</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="media">
-                                                <a href="post-style-3.html">
-                                                    <img src="img/footer/post3.jpg" alt="post" class="img-fluid">
-                                                </a>
-                                                <div class="media-body">
-                                                    <h3 class="title-medium-light size-md mb-10">
-                                                        <a href="#">Basketball Stars Face tim ate Playoff Battle</a>
-                                                    </h3>
-                                                    <div class="post-date-light">
-                                                        <ul>
-                                                            <li>
-                                                                <span>
-                                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                </span>March 31, 2017</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                       
+                                     {% endfor %}  
+                                      
+                                       
                                     </ul>
                                 </div>
                             </div>
+                {%comment %} --- orta footer --- {% endcomment %}
                             <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12">
                                 <div class="footer-box">
-                                    <h2 class="title-bold-light title-bar-left text-uppercase">Popular Categories</h2>
+                                    <h2 class="title-bold-light title-bar-left text-uppercase">Haber Kategorileri</h2>
                                     <ul class="popular-categories">
-                                        <li>
-                                            <a href="#">Gadgets
-                                                <span>15</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Architecture
-                                                <span>10</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">New look 2017
-                                                <span>14</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Reviews
-                                                <span>13</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Mobile and Phones
-                                                <span>19</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Recipes
-                                                <span>26</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Decorating
-                                                <span>21</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">IStreet fashion
-                                                <span>09</span>
-                                            </a>
-                                        </li>
+                                        {% for category in categories %}
+                                            {% if not category.parent %}
+                                                <li>
+                                                    <a href="{{ category.get_absolute_url }}">{{ category.name|title }}
+                                                        
+                                                        <span>{{ category.categories.count }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                       
                                     </ul>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-lg-5 col-md-12 col-sm-12">
+                                
+                    {%comment %} --- sağ footer --- {% endcomment %}
                                 <div class="footer-box">
-                                    <h2 class="title-bold-light title-bar-left text-uppercase">Post Gallery</h2>
-                                    <ul class="post-gallery shine-hover ">
-                                        <li>
-                                            <a href="gallery-style1.html">
-                                                <figure>
-                                                    <img src="img/footer/post4.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
+                                    <h2 class="title-bold-light title-bar-left text-uppercase">Sayfalar</h2>
+                                     <div class="offcanvas-main-body">
+                    <ul id="accordion-footer" class="offcanvas-nav panel-group">
+                        <li class="panel panel-default" style="margin-bottom: 8px;">
+                            <div class="panel-heading">
+                                <a href="{% url 'pages:home' %}">
+                                    <i class="fa fa-home" aria-hidden="true" style="margin-right: 8px;"></i>Anasayfa</a>
+                            </div>
+                            
+                        </li>
+                        <li class="panel panel-default" style="margin-bottom: 8px;">
+                            <div class="panel-heading">
+                                <a href="{% url 'borsa' %}">
+                                    <i class="fa fa-file-text" aria-hidden="true" style="margin-right: 8px;"></i>Borsa</a>
+                            </div>
+                           
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            <a href="{% url 'eczane' %}">
+                                <i class="fa fa-info-circle" aria-hidden="true" style="margin-right: 8px;"></i>Nöbetçi Eczaneler</a>
+                        </li>
+                        
+                        <li class="panel panel-default" style="margin-bottom: 8px;">
+                            <div class="panel-heading">
+                                <a href="{% url 'pages:category_list' 'mustafakemalpasa' %}">
+                                    <i class="fa fa-newspaper-o" aria-hidden="true" style="margin-right: 8px;"></i>Yerel Haberler</a>
+                            </div>
+                        </li>
+                        
+                        <li class="panel panel-default" style="margin-bottom: 8px;">
+                            <div class="panel-heading">
+                                <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-footer" href="#collapseFourFooter">
+                                    <i class="fa fa-archive" aria-hidden="true" style="margin-right: 8px;"></i>Haber Kategorileri</a>
+                            </div>
+                            <div aria-expanded="false" id="collapseFourFooter" role="tabpanel" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="offcanvas-sub-nav">
+                                        {% for menu in menus %}
+                                        <li style="margin-bottom: 6px;">
+                                            <a href="{{ menu.get_absolute_url }}">{{ menu.name }}</a>
                                         </li>
-                                        <li>
-                                            <a href="gallery-style2.html">
-                                                <figure>
-                                                    <img src="img/footer/post5.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style1.html">
-                                                <figure>
-                                                    <img src="img/footer/post6.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style2.html">
-                                                <figure>
-                                                    <img src="img/footer/post7.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style1.html">
-                                                <figure>
-                                                    <img src="img/footer/post8.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style2.html">
-                                                <figure>
-                                                    <img src="img/footer/post9.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style1.html">
-                                                <figure>
-                                                    <img src="img/footer/post10.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style2.html">
-                                                <figure>
-                                                    <img src="img/footer/post11.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery-style1.html">
-                                                <figure>
-                                                    <img src="img/footer/post12.jpg" alt="post" class="img-fluid">
-                                                </figure>
-                                            </a>
-                                        </li>
+                                        {% endfor %}
+                                        
                                     </ul>
                                 </div>
+                            </div>
+                        </li>
+                        
+                        <li style="margin-bottom: 8px;">
+                            <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank" rel="noopener noreferrer">
+                                <i class="fa fa-whatsapp" aria-hidden="true" style="margin-right: 8px;"></i>Haber Paylaşın</a>
+                        </li>
+                    </ul>
+                </div>
+                                  
+                                </div>
+                           
                             </div>
                         </div>
                     </div>
@@ -196,45 +135,9 @@
                         <div class="row">
                             <div class="col-12 text-center">
                                 <a href="index-2.html" class="footer-logo img-fluid">
-                                    <img src="img/logo.png" alt="logo" class="img-fluid">
+                                    <img src="{% static 'img/logo.png' %}" alt="logo" class="img-fluid">
                                 </a>
-                                <ul class="footer-social">
-                                    <li>
-                                        <a href="#" title="facebook">
-                                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="twitter">
-                                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="google-plus">
-                                            <i class="fa fa-google-plus" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="linkedin">
-                                            <i class="fa fa-linkedin" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="pinterest">
-                                            <i class="fa fa-pinterest" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="rss">
-                                            <i class="fa fa-rss" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="vimeo">
-                                            <i class="fa fa-vimeo" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+                               
                                 <p>© {% now "Y" %} & {{ site_settings.site_name }}</p>
                             </div>
                         </div>

@@ -44,5 +44,11 @@ urlpatterns = [
     path('', include('pages.urls', namespace='pages'), name='pages'),
     path('tinymce/', include('tinymce.urls')),
     
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+handler404 = "site_ayarları.views.page_not_found"
 

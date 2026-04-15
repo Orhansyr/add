@@ -1,0 +1,43 @@
+cache silme :
+ python manage.py shell -c "from django.core.cache import cache; cache.clear(); print('cache temizlendi')"
+
+index.html= 
+1.slider kısmında {{ forloop.counter }} eklendi hangi resimlerin geldiğini anlamak için. easy-thumbnail daha istikrarlı çalışması için base.html dosyasına css eklendi head içinde.
+
+2. TÜM HABERLER  kısmında boostrap isotop kullanılmış templatede . direction kısımları doğru çalışması için  örneğin: data-filter=".{{ cat.slug }} eklendi ve base.html sonuna JavaScript eklendi.
+
+3. easy-thumbnail için alias kullanıldı settings dosyasına  (sonunda).
+4. Redis kullanıldı cache için. Tinymce kullanıldı.
+
+5. haber detay sayfasında resimler tıklayınca büyüsün ve galeri oluşması için lightbox2 kullandık {% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+{% endblock %}... news_details.html içinde lightbox2 için css ve js için block kullanıldı sadece sayfaya özel css ve js olduğu için boylece tüm web siteye yük olmayacak.
+
+
+6. pages içinde templatetags klasorunde templatetag kullandık , news_detail sayfasında ilk 25 kelime sonra 2 resim ve sonrada haberin devamını koymak  için.
+
+7. Sayfalama yok bunun yerine category haberlerinde ve authors.html içinde daha fazla gör (css ve main.js) butonu yapıldı. 
+
+
+8.sayfa içi breadcrumbs kullanılmadı. sayfalama ve breadcrumbs diğer (news) projede var.
+
+9. Twitter ve Open Graph Kartları kullanıldı (site_ayarları app içinde)
+Sosyal medyada bir haber paylaşıldığında zengin görünmesi için
+
+10. google ve yandex için "ld+json" kuruldu(site_ayarları app içinde)
+
+11. robot.txt ve config/urls.py içine eklendi.
+
+12. sitemap eklendi. site_ayarları/sitemaps.py içinde ve config/urls.py içine path eklendi settings içine eklendi "INSTALLED_APPS" içine.
+
+13. site_ayarları/feed.py içinde Google News için altyapı hazır (https://publishercenter.google.com/ )
+
+14. settings içinde veritabanı ,redis gibi bilgileri gizlemek için .env dosyası kullandık.django-environ
+
+15. Hava durumu bilgisi için "site_ayarları" APP içinde context.py içinde hava_durumu fonksiyonu kullandık. header.html de kullandık.
+
+16.menü için site_ayarları context eklendi. partials/menu_alt.html dropdown için.
+
+17. header.html döviz bant eklendi site_ayarları context içinde
+
+18. borsa.html eklendi. site_ayarları context içinde

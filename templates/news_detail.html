@@ -288,9 +288,7 @@
                                                             <img src="{{ thumb.url }}" alt="{{ item.name }}" class="img-fluid width-100 rounded">
                                                         </a>
                                                 {% else %}
-                                                    <a href="{{ item.get_absolute_url }}">
-                                                        <img src="{% static 'img/blog1.jpg' %}" alt="{{ item.name }}" class="img-fluid width-100 rounded">
-                                                    </a>
+                                                    
                                                 {% endif %}
                                                 {% endwith %}
                                                 <div class="topic-box-top-xs">
@@ -503,9 +501,11 @@
 
                                 
                                 
-                    <!--       {# Sağ taraf Son Haberler Bölümü  #}
-                                 {# news_extras.py dosyasından gelen templatetags kullanıldı #}
-
+                    {% comment %}    
+                      
+                    {# news_extras.py dosyasından gelen templatetags kullanıldı #}
+                                
+                                {# Sağ taraf Son Haberler Bölümü  #}
                                 {% latest_news_widget 4 news.slug True %}
 
                                 {# Sağ taraf Newsletter Bölümü  #}
@@ -529,7 +529,9 @@
                                         </div>
                                     </div>
                                 </div>
-                        -->      
+                        {% comment %}     
+                         
+                        {# Sağ taraf Kategoriler Bölümü  #} {% endcomment %}
                                 <div class="sidebar-box">
                                     <div class="item-box-light-md">
                                         <div class="topic-border color-cod-gray mb-25">
@@ -558,6 +560,7 @@
 <script src="{% static 'js/lightbox.min.js' %}"></script>
 <script src="{% static 'js/lightbox-init.js' %}"></script>
 <script>
+
 function copyShareLink(url) {
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(url).catch(function() {});

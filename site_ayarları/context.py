@@ -40,12 +40,23 @@ def site_settings(request):
 
 
 # Kategorileri önbelleğe alarak tüm şablonlarda MENÜ olarak kullanılabilir hale getirir
-def site_categories(request):
+def footer_categories(request):
     categories = cache.get("categories")
     if not categories:
         categories = Category.objects.all()
-        cache.set("categories", categories, 60 * 60 * 12)  # 12 saat boyunca önbellekte tut
-    return {'categories': categories}
+        cache.set("categories", categories, 60 * 60 * 18)  # 18 saat boyunca önbellekte tut
+
+    footer_news = cache.get("footer_news")
+    if footer_news is None:
+        footer_news = (
+            News.objects.filter(is_active=True)
+            .select_related("category", "author")
+            .prefetch_related("images")
+            .order_by("-published_date")[:3]
+        )
+        cache.set("footer_news", footer_news, 60 * 60 * 12)
+
+    return {"categories": categories, "footer_news": footer_news}
 
 
 

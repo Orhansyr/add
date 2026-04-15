@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    #"django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -71,6 +72,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #"django.middleware.cache.FetchFromCacheMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -88,7 +90,7 @@ TEMPLATES = [
                 "site_ayarları.context.menu",  # Her template'de `menus` değişkenini kullanılabilir hale getirir
                 "site_ayarları.context.site_settings",  # Her template'de `site_settings` değişkenini kullanılabilir hale getirir
                 "site_ayarları.context.site_structured_data",  # Her template'de `site_structured_data` değişkenini kullanılabilir hale getirir
-                "site_ayarları.context.site_categories",  # Her template'de `site_categories` değişkenini kullanılabilir hale getirir
+                "site_ayarları.context.footer_categories",  # Her template'de `footer_categories` değişkenini kullanılabilir hale getirir
                 "site_ayarları.context.hava_durumu",  # Header icin hava durumu verisi
                 "site_ayarları.context.tcmb_piyasa_verileri",  # Header ticker icin TCMB piyasa verileri
                 "site_ayarları.context.borsa_hisse_verileri",  # Borsa hisse senetleri verisi
@@ -112,11 +114,11 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": env.str("DB_ENGINE", default="django.db.backends.mysql"),
-            "NAME": env.str("DB_NAME", default="django6"),
-            "USER": env.str("DB_USER", default="add"),
-            "PASSWORD": env.str("DB_PASSWORD", default="123456"),
-            "HOST": env.str("DB_HOST", default="localhost"),
-            "PORT": env.str("DB_PORT", default="3306"),
+            "NAME": env.str("DB_NAME"),
+            "USER": env.str("DB_USER"),
+            "PASSWORD": env.str("DB_PASSWORD"),
+            "HOST": env.str("DB_HOST"),
+            "PORT": env.str("DB_PORT"),
             "OPTIONS": {
                 "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
                 "charset": "utf8mb3",
@@ -230,10 +232,11 @@ THUMBNAIL_QUALITY = 85
 
 # Cache Ayarı (Redis veya Database tabanlı olabilir)
 if DEBUG:
-    # Geliştirme aşamasında Redis'e ihtiyaç duymaz, hata vermez
+    # Geliştirme aşamasında cache davranışını yerelde test etmek için bellek içi cache
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "local-dev-cache",
         }
     }
 else:
@@ -248,3 +251,15 @@ else:
         }
     }
 CACHE_TTL = 60 * 60 * 6
+
+
+'''
+if DEBUG:
+    # Geliştirme aşamasında Redis'e ihtiyaç duymaz, hata vermez
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        }
+    }
+
+'''    

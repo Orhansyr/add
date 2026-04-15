@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from .models import News, Category, Author, NewsVideo
+from django.views.decorators.cache import cache_page
 #import feedparser
 
 # Anasayfa için view fonksiyonu
+@cache_page(60 * 60 * 24)  # Anasayfa içeriğini 24 saat cache'ler
 def home(request):
     news = (
         News.objects.filter(is_active=True)
@@ -19,11 +21,14 @@ def home(request):
 
     context = {"news": news, "videos": videos}
     return render(request, "index.html", context)
+   
 
 
 
 # Haber detay sayfası için view fonksiyonu
+@cache_page(60 * 60 * 24)  # Haber detay sayfasını 24 saat cache'ler
 def news_detail(request, slug):
+    #print(f"%%% news_detail view calisti %%%% : {slug}")
     news = (
         News.objects.all()
         .select_related("category", "author")
@@ -64,6 +69,7 @@ def news_detail(request, slug):
 
 
 # Kategori sayfası için view fonksiyonu
+@cache_page(60 * 60 * 24)  # Kategori sayfasını 24 saat cache'ler
 def category_list(request, slug):
     """View: show news for a given category slug."""
     category = get_object_or_404(Category, slug=slug)
@@ -79,6 +85,7 @@ def category_list(request, slug):
 
 
 # Yazar sayfası için view fonksiyonu
+@cache_page(60 * 60 * 24)  # Yazar sayfasını 24 saat cache'ler
 def authors(request, slug):
     author = get_object_or_404(Author, slug=slug)
     news_list = (
@@ -89,6 +96,7 @@ def authors(request, slug):
 
     context = {"author": author, "news_list": news_list}
     return render(request, "authors.html", context)
+
 
 
 def search(request):
@@ -107,24 +115,3 @@ def search(request):
 
 
 
-
-'''
-# RSS beslemesini çekmek ve haberleri göstermek için bir view fonksiyonu
-def feed(request):
-    rss_url = "https://www.ensonhaber.com/rss/ensonhaber.xml"
-    parsed_feed = feedparser.parse(rss_url)
-
-    entries = [
-        {
-            "title": getattr(entry, "title", "Başlık bulunamadı"),
-            "link": getattr(entry, "link", "#"),
-        }
-        for entry in parsed_feed.entries
-    ]
-
-    context = {
-        "entries": entries,
-        "feed_error": str(parsed_feed.bozo_exception) if parsed_feed.bozo else None,
-    }
-    return render(request, "partials/feed.html", context)
-   ''' 
